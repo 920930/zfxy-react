@@ -11,5 +11,5 @@ const store = configureStore({
 })
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
-
+export { updateToken, updateUser, loginAction, userAction } from './modules/user';
 export default store;

@@ -27,16 +27,21 @@ const userSlice = createSlice({
       .addCase(loginAction.fulfilled, (state, action) => {
         state.token = action.payload
       })
+      .addCase(userAction.fulfilled, (state, action) => {
+        state.user = action.payload
+      })
   },
 })
 
+// user/loginAction 仅为辨识符号，用于dispatch('user/loginAction')辨识
 export const loginAction = createAsyncThunk('user/loginAction', async (val: {phone: string; password: string}) => {
   const ret = await new Promise((resolve, reject) => resolve('haha'));
   console.log(ret)
   return ''
 })
-export const userAction = createAsyncThunk('user/loginAction', (val: {phone: string; password: string}) => {
-  
+
+export const userAction = createAsyncThunk('user/userAction', () => {
+  return {}
 })
 
 export const { updateToken, updateUser } = userSlice.actions

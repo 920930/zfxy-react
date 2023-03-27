@@ -1,15 +1,13 @@
 import logo from '../../assets/logo.png'
 import { Form, Button, Input } from 'antd-mobile'
 import { UserCircleOutline } from 'antd-mobile-icons'
-import { loginAction, useAppDispatch } from '../../stores'
+import { loginAction, useAppDispatch } from '../../store'
 
 type Props = {}
 
 const Login = (props: Props) => {
-  const onFinish = (value: { phone: string; password: string }) => {
-    console.log(value)
-    useAppDispatch(loginAction(value))
-  }
+  const appDispatch = useAppDispatch()
+  const onFinish = (value: { phone: string; password: string }) => appDispatch(loginAction(value))
   return (
     <>
       <div className='flex justify-center mt-16'>
