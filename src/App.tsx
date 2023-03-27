@@ -1,24 +1,10 @@
-<<<<<<< HEAD
-import { useSelector } from 'react-redux';
-import { RootState } from './store/typings'
-type Props = {}
-
-const App = (props: Props) => {
-  const token = useSelector((state: RootState) => state.userReducer.token)
-  return (
-    <div>{token}</div>
-  )
-}
-
-export default App
-=======
 import { Link, useLocation, Outlet, matchRoutes, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import Header from './components/layouts/Header';
 import Footer from './components/layouts/Footer';
 import Index from './pages/Index';
 import { routes } from './router';
-import type { RootState } from './stores/typings';
+import type { RootState } from './store/typings';
 
 type Props = {
   children?: React.ReactNode
@@ -29,7 +15,7 @@ type Props = {
 const App: React.FC<Props> = () => {
   const location = useLocation();
   const matchs = matchRoutes(routes, location);
-  const token = useSelector((state: RootState) => state.user.token);
+  const token = useSelector((state: RootState) => state.userReducer.token);
 
   if(Array.isArray(matchs)){
     const meta = matchs.at(-1)?.route.meta
@@ -46,4 +32,3 @@ const App: React.FC<Props> = () => {
 }
 
 export default App
->>>>>>> 25ccda66174cca06cd4ec300b7a3724dc9ef9804
