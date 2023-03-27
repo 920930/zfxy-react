@@ -23,12 +23,17 @@ const userSlice = createSlice({
     }
   },
   extraReducers(builder) {
-    
+    builder
+      .addCase(loginAction.fulfilled, (state, action) => {
+        state.token = action.payload
+      })
   },
 })
 
-export const loginAction = createAsyncThunk('user/loginAction', (val: {phone: string; password: string}) => {
-
+export const loginAction = createAsyncThunk('user/loginAction', async (val: {phone: string; password: string}) => {
+  const ret = await new Promise((resolve, reject) => resolve('haha'));
+  console.log(ret)
+  return ''
 })
 export const userAction = createAsyncThunk('user/loginAction', (val: {phone: string; password: string}) => {
   
