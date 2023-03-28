@@ -30,7 +30,7 @@ const Footer: React.FC<Props> = (props) => {
       icon: <MessageOutline />,
     },
     {
-      key: '/login',
+      key: '/me',
       title: '我的',
       icon: <UserOutline />,
     },

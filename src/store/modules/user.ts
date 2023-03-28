@@ -11,6 +11,7 @@ const userSlice = createSlice({
   } as {token: TToken; user: TUser},
   reducers: {
     updateToken(state, { payload }: PayloadAction<TToken>){
+      console.log(33333)
       state.token = payload;
       setLocalStorage('token', payload)
     },
@@ -24,20 +25,21 @@ const userSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(loginAction.fulfilled, (state, action) => {
-        state.token = action.payload
-      })
+      // .addCase(loginAction.fulfilled, (state, action) => {
+      //   updateToken(action.payload)
+      //   setLocalStorage('token', action.payload)
+      //   // state.token = action.payload;
+      // })
       .addCase(userAction.fulfilled, (state, action) => {
-        state.user = action.payload
+        state.user = action.payload;
       })
   },
 })
 
 // user/loginAction 仅为辨识符号，用于dispatch('user/loginAction')辨识
 export const loginAction = createAsyncThunk('user/loginAction', async (val: {phone: string; password: string}) => {
-  const ret = await new Promise((resolve, reject) => resolve('haha'));
-  console.log(ret)
-  return ''
+  const ret: string = await new Promise((resolve, reject) => resolve('token-12312321313'));
+  return ret
 })
 
 export const userAction = createAsyncThunk('user/userAction', () => {

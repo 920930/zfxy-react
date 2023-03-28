@@ -4,8 +4,9 @@ import { lazy } from 'react';
 
 const App = lazy(() => import('../App'));
 const Login = lazy(() => import('../pages/auth/Login'));
-const Index = lazy(() => import('../pages/Index'));
+const Index = lazy(() => import('../pages/Home'));
 const Todu = lazy(() => import('../pages/todu/Todu'));
+const Me = lazy(() => import('../pages/me/Me'));
 
 declare module 'react-router'{
   interface IndexRouteObject {
@@ -49,6 +50,15 @@ export const routes: RouteObject[] = [
         element: <Todu />,
         meta: {
           title: 'todu',
+          isAuth: true
+        }
+      },
+      {
+        path: 'me',
+        name: 'me',
+        element: <Me />,
+        meta: {
+          title: 'me',
           isAuth: true
         }
       }

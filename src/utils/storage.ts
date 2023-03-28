@@ -1,6 +1,6 @@
 export const getLocalStorage = <T>(key: string, initValue: T): T => {
   const val = localStorage.getItem(key);
-  return val ? JSON.parse(val) : initValue;
+  return val ? typeof initValue === 'object' ? JSON.parse(val) : val : initValue;
 };
 
 export const setLocalStorage = (key: string, val: any) => {

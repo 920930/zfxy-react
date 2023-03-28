@@ -7,7 +7,7 @@ import type { RootState } from './store/typings';
 
 import Header from './components/layouts/Header';
 import Footer from './components/layouts/Footer';
-const Index = lazy(() => import('./pages/Index'));
+const Index = lazy(() => import('./pages/Home'));
 
 /* 
   用于登录验证

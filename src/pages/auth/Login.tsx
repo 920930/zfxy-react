@@ -1,13 +1,20 @@
 import logo from '../../assets/logo.png'
 import { Form, Button, Input } from 'antd-mobile'
 import { UserCircleOutline } from 'antd-mobile-icons'
-import { loginAction, useAppDispatch } from '../../store'
+import { loginAction, updateToken, useAppDispatch } from '../../store'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {}
 
 const Login = (props: Props) => {
-  const appDispatch = useAppDispatch()
-  const onFinish = (value: { phone: string; password: string }) => appDispatch(loginAction(value))
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const onFinish = (value: { phone: string; password: string }) => {
+    dispatch(loginAction(value))
+      // .then((ret) => appDispatch({type: 'user/updateToken', payload: ret.payload}))
+      .then((ret) => dispatch(updateToken(ret.payload as string)))
+      .then(() => navigate('/'))
+  }
   return (
     <>
       <div className='flex justify-center mt-16'>
