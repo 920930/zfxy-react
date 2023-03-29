@@ -23,7 +23,13 @@ const App: React.FC<{children?: React.ReactNode}> = () => {
     const meta = matchs.at(-1)?.route.meta
     if(meta?.isAuth && !Object.keys(user).length) {
       if(token) {
-        appDispatch(userAction())
+        appDispatch(userAction()).then(() => {
+          const appIndex = routes.find(item => item.path === '/')
+          if(appIndex && appIndex.children){
+            appIndex.children = [...appIndex.children, {path: 'hehe'}]
+          }
+          console.log('next, ', user)
+        })
       } else {
         return <Navigate to='/login' />
       }

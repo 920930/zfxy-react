@@ -11,7 +11,6 @@ const userSlice = createSlice({
   } as {token: TToken; user: TUser},
   reducers: {
     updateToken(state, { payload }: PayloadAction<TToken>){
-      console.log(33333)
       state.token = payload;
       setLocalStorage('token', payload)
     },
@@ -31,6 +30,7 @@ const userSlice = createSlice({
       //   // state.token = action.payload;
       // })
       .addCase(userAction.fulfilled, (state, action) => {
+        console.log(action)
         state.user = action.payload;
       })
   },
@@ -43,7 +43,7 @@ export const loginAction = createAsyncThunk('user/loginAction', async (val: {pho
 })
 
 export const userAction = createAsyncThunk('user/userAction', () => {
-  return {}
+  return {id: 1}
 })
 
 export const { updateToken, updateUser } = userSlice.actions

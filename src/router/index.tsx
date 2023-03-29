@@ -7,6 +7,8 @@ const Login = lazy(() => import('../pages/auth/Login'));
 const Index = lazy(() => import('../pages/Home'));
 const Todu = lazy(() => import('../pages/todu/Todu'));
 const Me = lazy(() => import('../pages/me/Me'));
+// 导入类工具函数
+const lazyLoay = (url: string) => lazy(() => import(`../page/${url}`));
 
 declare module 'react-router'{
   interface IndexRouteObject {
@@ -32,7 +34,7 @@ export const routes: RouteObject[] = [
     element: <App />,
     meta: {
       title: 'app首页',
-      isAuth: false,
+      isAuth: true,
     },
     children: [
       {
