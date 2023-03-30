@@ -3,8 +3,8 @@ import { NavBar, Toast } from 'antd-mobile'
 import { SearchOutline, MoreOutline, CloseOutline } from 'antd-mobile-icons'
 
 type Props = {
-  show?: boolean;
-  title?: string;
+  show?: boolean
+  title?: string
 }
 
 const Header: React.FC<Props> = (props) => {
@@ -15,13 +15,19 @@ const Header: React.FC<Props> = (props) => {
       duration: 1000,
     })
   return (
-    <section className='border-b'>
+    <section className="border-b">
       <NavBar
-        className='relative flex-1'
+        className="relative"
         back={!show && null}
         onBack={back}
-        right={<SearchOutline className='text-xl' />}
-      >{title}</NavBar>
+        right={
+          <div className="flex justify-end">
+            <SearchOutline className="text-xl" />
+          </div>
+        }
+      >
+        {title}
+      </NavBar>
     </section>
   )
 }
