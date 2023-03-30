@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavBar, Toast } from 'antd-mobile'
+import { SearchOutline, MoreOutline, CloseOutline } from 'antd-mobile-icons'
 
 type Props = {
   show?: boolean;
@@ -15,7 +16,12 @@ const Header: React.FC<Props> = (props) => {
     })
   return (
     <section className='border-b'>
-      <NavBar back={!show && null} onBack={back}>{title}</NavBar>
+      <NavBar
+        className='relative flex-1'
+        back={!show && null}
+        onBack={back}
+        right={<SearchOutline className='text-xl' />}
+      >{title}</NavBar>
     </section>
   )
 }

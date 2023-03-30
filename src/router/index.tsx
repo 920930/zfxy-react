@@ -1,74 +1,66 @@
-import { createBrowserRouter } from 'react-router-dom'
+import React from 'react';
+import { createBrowserRouter, redirect } from 'react-router-dom'
 import type { RouteObject } from 'react-router-dom';
 import { lazy } from 'react';
-
-const App = lazy(() => import('../App'));
-const Login = lazy(() => import('../pages/auth/Login'));
-const Index = lazy(() => import('../pages/Home'));
-const Todu = lazy(() => import('../pages/todu/Todu'));
-const Me = lazy(() => import('../pages/me/Me'));
-// 导入类工具函数
-const lazyLoay = (url: string) => lazy(() => import(`../page/${url}`));
+import store from '../store';
 
 declare module 'react-router'{
   interface IndexRouteObject {
     name?: string;
     meta?: {
       title: string;
-      isAuth: boolean;
+      auth: boolean;
     }
   }
   interface NonIndexRouteObject{
     name?: string;
     meta?: {
       title: string;
-      isAuth: boolean;
+      auth: boolean;
     }
   }
 }
+
+// const lazyLoad = (url: string, props?: unknown, children?: React.ReactNode) => React.createElement(lazy(() => import(`../pages/${url}`)), props, children);
 
 export const routes: RouteObject[] = [
   {
     path: '/',
     name: 'app',
-    element: <App />,
+    element: React.createElement(lazy(() => import('../App'))),
     meta: {
       title: 'app首页',
-      isAuth: true,
+      auth: true,
     },
     children: [
       {
-        path: 'index',
-        name: 'index',
-        element: <Index />,
-        meta: {
-          title: '首页',
-          isAuth: true
-        }
-      },
-      {
         path: 'todu',
         name: 'todu',
-        element: <Todu />,
+        element: React.createElement(lazy(() => import('../pages/todu'))),
         meta: {
           title: 'todu',
-          isAuth: true
+          auth: true
         }
       },
       {
         path: 'me',
         name: 'me',
-        element: <Me />,
+        element: React.createElement(lazy(() => import('../pages/me'))),
         meta: {
           title: 'me',
-          isAuth: true
+          auth: true
         }
       }
     ]
   },
   {
     path: '/login',
-    element: <Login />
+    name: 'login',
+    element: React.createElement(lazy(() => import('../pages/auth/login'))),
+    loader(){
+      // 如果已经登录，还要进入login页面，将被跳转到首页
+      return store.getState().userReducer.token ? redirect('/') : null;
+    }
   }
 ];
 

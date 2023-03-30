@@ -1,13 +1,13 @@
-import { lazy } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import { Link, useLocation, Outlet, matchRoutes, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import { routes } from './router';
-import { useAppDispatch, userAction } from './store';
+import { useAppDispatch, userAction, menuAction } from './store';
 import type { RootState } from './store/typings';
 
 import Header from './components/layouts/Header';
 import Footer from './components/layouts/Footer';
-const Index = lazy(() => import('./pages/Home'));
+const Home = lazy(() => import('./pages/Home'));
 
 /* 
   用于登录验证
@@ -18,27 +18,24 @@ const App: React.FC<{children?: React.ReactNode}> = () => {
   const matchs = matchRoutes(routes, location);
   const token = useSelector((state: RootState) => state.userReducer.token);
   const user = useSelector((state: RootState) => state.userReducer.user);
+  const [title, setTitle] = useState('')
 
   if(Array.isArray(matchs)){
-    const meta = matchs.at(-1)?.route.meta
-    if(meta?.isAuth && !Object.keys(user).length) {
+    const route = matchs.at(-1)?.route
+    if(route?.meta?.auth && !Object.keys(user).length) {
       if(token) {
-        appDispatch(userAction()).then(() => {
-          const appIndex = routes.find(item => item.path === '/')
-          if(appIndex && appIndex.children){
-            appIndex.children = [...appIndex.children, {path: 'hehe'}]
-          }
-          console.log('next, ', user)
-        })
+        // 获取用户信息 - 获取菜单列表信息
+        appDispatch(userAction()).then(() => appDispatch(menuAction()))
       } else {
         return <Navigate to='/login' />
       }
     }
+    useEffect(() => setTitle(route?.meta?.title ?? ''), [route?.meta?.title])
   }
   return (
     <>
-      <Header show={false} />
-      {location.pathname === '/' ? <Index /> : <Outlet />}
+      <Header show={location.pathname === '/' ? false : true } title={title} />
+      {location.pathname === '/' ? <Home /> : <Outlet />}
       <Link to='/login'>login</Link>
       <Footer />
     </>

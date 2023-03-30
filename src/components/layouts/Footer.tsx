@@ -20,14 +20,9 @@ const Footer: React.FC<Props> = (props) => {
       icon: <AppOutline />,
     },
     {
-      key: '/index',
-      title: '待办',
-      icon: <UnorderedListOutline />,
-    },
-    {
       key: '/todu',
       title: '消息',
-      icon: <MessageOutline />,
+      icon: <UnorderedListOutline />,
     },
     {
       key: '/me',

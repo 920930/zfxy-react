@@ -10,10 +10,7 @@ const Login = (props: Props) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const onFinish = (value: { phone: string; password: string }) => {
-    dispatch(loginAction(value))
-      // .then((ret) => appDispatch({type: 'user/updateToken', payload: ret.payload}))
-      .then((ret) => dispatch(updateToken(ret.payload as string)))
-      .then(() => navigate('/'))
+    dispatch(loginAction(value)).then(() => navigate('/'))
   }
   return (
     <>
