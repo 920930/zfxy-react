@@ -9,6 +9,8 @@ type Props = {}
 const Login = (props: Props) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  globalThis.location.href =
+    'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7e998d6d465a5e90&redirect_uri=http://192.168.2.116:5173&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
   const onFinish = (value: { phone: string; password: string }) => {
     dispatch(loginAction(value)).then(() => navigate('/'))
   }

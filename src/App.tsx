@@ -8,10 +8,12 @@ import {
 } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { routes } from './router'
-import { useAppDispatch, userAction, menuAction } from './store'
+import http from './utils/http'
+import { useAppDispatch, userAction, menuAction, clearAll } from './store'
 import type { RootState } from './store/typings'
 
 import Footer from './components/layouts/Footer'
+import { Button } from 'antd-mobile'
 const Home = lazy(() => import('./pages/Home'))
 
 /* 
@@ -39,24 +41,30 @@ const App: React.FC<{ children?: React.ReactNode }> = () => {
   }
 
   useEffect(() => {
-    wx.config({
-      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-      appId: 'wx7e998d6d465a5e90', // 必填，公众号的唯一标识
-      timestamp: 411212, // 必填，生成签名的时间戳
-      nonceStr: 'string', // 必填，生成签名的随机串
-      signature: 'string', // 必填，签名，见附录1
-      jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'], // 必填，需要使用的 JS 接口列表
-      openTagList: ['wx-open-launch-app'],
+    let pathname = location.pathname
+    location.search.length && (pathname += location.search)
+    http.post('/init', { url: pathname }).then(({ data }) => {
+      wx.config({
+        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: data.appId, // 必填，公众号的唯一标识
+        timestamp: data.timestamp, // 必填，生成签名的时间戳
+        nonceStr: data.noncestr, // 必填，生成签名的随机串
+        signature: data.signature, // 必填，签名，见附录1
+        jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'], // 必填，需要使用的 JS 接口列表
+        openTagList: ['wx-open-launch-app'],
+      })
     })
-
+    // globalThis.location.origin http://192.168.2.116:5173/
     wx.ready(() => {
-      console.log(123)
+      alert('123')
     })
   }, [])
+  const clearBtn = () => appDispatch(clearAll())
   return (
     <>
       {location.pathname === '/' ? <Home /> : <Outlet />}
       <Link to="/login">login</Link>
+      <Button onTouchEnd={clearBtn}>清除localstorage</Button>
       <Footer />
     </>
   )
