@@ -2,17 +2,25 @@ import logo from '../../assets/logo.png'
 import { Form, Button, Input } from 'antd-mobile'
 import { UserCircleOutline } from 'antd-mobile-icons'
 import { loginAction, useAppDispatch } from '../../store'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 type Props = {}
 
 const Login = (props: Props) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  globalThis.location.href =
-    'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7e998d6d465a5e90&redirect_uri=http://192.168.2.116:5173&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
+  const [searchParams] = useSearchParams(location.search)
+  const code = searchParams.get('code')
+  !code &&
+    (globalThis.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${
+      import.meta.env.VITE_APPID
+    }&redirect_uri=${
+      globalThis.location.origin
+    }/login&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`)
   const onFinish = (value: { phone: string; password: string }) => {
-    dispatch(loginAction(value)).then(() => navigate('/'))
+    dispatch(loginAction({ ...value, code: code ?? '' })).then(() =>
+      navigate('/')
+    )
   }
   return (
     <>

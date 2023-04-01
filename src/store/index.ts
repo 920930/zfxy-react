@@ -13,6 +13,6 @@ const store = configureStore({
 })
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
-export { clearAll, loginAction, userAction } from './modules/user';
+export { clearAll, updateToken, loginAction, userAction } from './modules/user';
 export { menuAction } from './modules/menu';
 export default store;

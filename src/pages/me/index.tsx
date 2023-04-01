@@ -1,15 +1,21 @@
-import React from 'react'
 import { clearAll, useAppDispatch } from '../../store'
+import { Button } from 'antd-mobile'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {}
 
 const Me = (props: Props) => {
   const dispatch = useAppDispatch()
-  const logout = () => dispatch(clearAll())
+  const navigate = useNavigate()
+  const logout = () => {
+    dispatch(clearAll())
+    navigate('/login')
+  }
+
   return (
     <>
       <div>Me -- Index</div>
-      <div onClick={logout}>logout</div>
+      <Button onTouchEnd={logout}>退出登录</Button>
     </>
   )
 }

@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction} from '@reduxjs/toolkit';
 import type { TToken, TUser } from '../typings';
-import { getLocalStorage, setLocalStorage, clearStorage } from '../../utils/storage';
+import { getLocalStorage, setLocalStorage, clearStorage } from '@/utils/storage';
+import http from '@/utils/http';
 
 const userSlice = createSlice({
   name: 'user',
@@ -11,6 +12,7 @@ const userSlice = createSlice({
   } as {token: TToken; user: TUser},
   reducers: {
     updateToken(state, { payload }: PayloadAction<TToken>){
+      console.log('update token redux')
       state.token = payload;
       setLocalStorage('token', payload)
     },
@@ -36,10 +38,9 @@ const userSlice = createSlice({
 })
 
 // user/loginAction 仅为辨识符号，用于dispatch('user/loginAction')辨识
-export const loginAction = createAsyncThunk('user/loginAction', async (val: {phone: string; password: string}) => {
-  console.log('login')
-  const ret = await new Promise<string>((resolve, reject) => resolve('token-12312321313'));
-  return ret
+export const loginAction = createAsyncThunk('user/loginAction', async (val: {phone: string; password: string; code: string}) => {
+  const ret = await http.post<{token: string}>('/login', val);
+  return ret.token
 })
 
 export const userAction = createAsyncThunk('user/userAction', () => {
@@ -47,6 +48,6 @@ export const userAction = createAsyncThunk('user/userAction', () => {
   return {id: 1}
 })
 
-export const { clearAll } = userSlice.actions
+export const { clearAll, updateToken } = userSlice.actions
 
 export default userSlice.reducer;
