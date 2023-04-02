@@ -17,10 +17,15 @@ const Login = (props: Props) => {
     }&redirect_uri=${
       globalThis.location.origin
     }/login&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`)
+
   const onFinish = (value: { phone: string; password: string }) => {
     dispatch(loginAction({ ...value, code: code ?? '' })).then(() =>
       navigate('/')
     )
+  }
+
+  const onWechat = () => {
+    dispatch(loginAction({ code: code ?? '' })).then(() => navigate('/'))
   }
   return (
     <>
@@ -56,7 +61,10 @@ const Login = (props: Props) => {
           <Input placeholder="请输入密码" />
         </Form.Item>
       </Form>
-      <p className="text-4xl flex flex-col items-center mt-8 text-emerald-500">
+      <p
+        className="text-4xl flex flex-col items-center mt-8 text-emerald-500"
+        onTouchEnd={onWechat}
+      >
         <UserCircleOutline />
         <span className="text-sm">微信登录</span>
       </p>

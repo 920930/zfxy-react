@@ -12,7 +12,6 @@ const userSlice = createSlice({
   } as {token: TToken; user: TUser},
   reducers: {
     updateToken(state, { payload }: PayloadAction<TToken>){
-      console.log('update token redux')
       state.token = payload;
       setLocalStorage('token', payload)
     },
@@ -38,8 +37,8 @@ const userSlice = createSlice({
 })
 
 // user/loginAction 仅为辨识符号，用于dispatch('user/loginAction')辨识
-export const loginAction = createAsyncThunk('user/loginAction', async (val: {phone: string; password: string; code: string}) => {
-  const ret = await http.post<{token: string}>('/login', val);
+export const loginAction = createAsyncThunk('user/loginAction', async (val: {phone?: string; password?: string; code: string}) => {
+  const ret = val.phone ? await http.post<{token: string}>('/login', val) : await http.get<{token: string}>('/wechat', { code: val.code });
   return ret.token
 })
 

@@ -31,7 +31,7 @@ instance.interceptors.response.use(response => {
     localStorage.clear()
     setTimeout(() => {
       globalThis.location.href = import.meta.env.VITE_CLIENT_HOST + '/login'
-    }, 2000)
+    }, 12000)
   }
   return Promise.reject(err.response.data);
 });
