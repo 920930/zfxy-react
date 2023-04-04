@@ -1,21 +1,21 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 type Props = {
-  showBorder?: boolean
+  showBorder?: boolean;
+  children?: React.ReactNode
 }
 
 const kehu = (props: Props) => {
   const { showBorder = true } = props;
-  const navigate = useNavigate()
 
   return (
-    <li className={showBorder ? 'border-b mb-2 pb-2' : '' } onClick={() => navigate('/user/1')}>
+    <li className={showBorder ? 'border-b mb-2 pb-2' : '' }>
       <section className='flex'>
-        <div className='h-28 w-24 bg-gray-100 text-gray-500 relative text-center pt-3'>
-          <span className='tracking-widest text-xl font-bold' style={{writingMode: 'vertical-lr'}}>买买提</span>
+        <Link to='/user/1' className={`${props.children === undefined ? 'h-28 pt-3' : 'h-36 flex justify-center'} w-24 bg-gray-100 text-gray-500 relative text-center`}>
+          <span className='tracking-widest text-xl font-bold' style={{writingMode: 'vertical-lr'}}>力量</span>
           <span className='absolute bottom-0 left-0 w-full bg-gray-200 tracking-widest'>陈国强</span>
-        </div>
+        </Link>
         <section className='flex-1 pl-3'>
           <section className='flex justify-between items-center'>
             <span>行业：门窗</span>
@@ -26,6 +26,7 @@ const kehu = (props: Props) => {
             <span className='text-gray-500'>2023-04-03</span>
           </section>
           <p className='text-gray-500 pt-1 border-t mt-1 text2'>简介：客户从事门窗行业多年客户从事门窗行业多年客户从事门窗年客户从事门窗行业多年</p>
+          {props.children}
         </section>
       </section>
     </li>

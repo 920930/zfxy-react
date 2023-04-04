@@ -1,6 +1,6 @@
 import { useAppDispatch, clearAll, logoutAction } from '../../store'
-import { Button, Image } from 'antd-mobile'
-import { useNavigate } from 'react-router-dom'
+import { Button, Image, Avatar } from 'antd-mobile'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/typings'
 import axios from 'axios'
@@ -30,7 +30,7 @@ const Me = (props: Props) => {
   return (
     <>
       <div className="flex items-center px-3 py-2 text-base">
-        <Image src={adminer.avatar} width={60} height={60} />
+        <Avatar src={adminer.avatar} style={{ '--size': '4rem' }} />
         <div className='ml-3'>
           <span className='font-bold text-xl'>{adminer.name}</span>
           <p className='mt-1.5 text-gray-700'>手机号：{adminer.phone}</p>
@@ -56,12 +56,12 @@ const Me = (props: Props) => {
       </ul>
       
       {
-        adminer.ruleId <= 3 &&
+        adminer.roleId <= 3 &&
         <ul className='border-b-8 border-gray-100 text-base'>
-          <li className='flex space-x-3 py-2 px-3 items-center'>
+          <Link to='/adminer' className='flex space-x-3 py-2 px-3 items-center text-gray-900'>
             <UserSetOutline className='text-3xl' />
             <span>员工列表</span>
-          </li>
+          </Link>
           <li className='flex space-x-3 border-t-8 border-gray-100 py-2 px-3 items-center'>
             <UserSetOutline className='text-3xl' />
             <span>新增员工</span>

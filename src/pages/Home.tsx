@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import KefuItem from '../components/item/user';
+import UserItem from '../components/item/user';
 import NoteItem from '../components/item/note';
 
 type Props = {}
@@ -16,7 +16,7 @@ const Home = (props: Props) => {
           <li className='text-gray-500 h-28 text-center pt-10'>今日暂无新增客户信息</li>
           :
           <>
-            { Array.from({length: 5}).map((item, i) => <KefuItem key={i} />) }
+            { Array.from({length: 5}).map((item, i) => <UserItem key={i} />) }
           </>
         }
       </ul>
@@ -37,7 +37,7 @@ const Home = (props: Props) => {
           <h3 className='font-bold text-xl'>以往客户列表</h3>
           <Link to='/user' className='flex-1 text-right text-gray-500'>查看更多</Link>
         </section>
-        { Array.from({length: 5}).map((item, i) => <KefuItem key={i} />) }
+        { Array.from({length: 5}).map((item, i) => <UserItem key={i} />) }
       </ul>
       <ul className='px-3 text-base border-t-8 border-gray-100 py-2'>
         <section className='flex items-center border-b mb-2 pb-0.5'>

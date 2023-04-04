@@ -76,13 +76,6 @@ const show = (props: Props) => {
               </div>
               <p className='text-gray-600'>今日邀约客户到华阳店查看店铺，客户很满意，也提出了一些要求，继续跟进中今日邀约客户到华阳店查看店铺，客户很满意，也提出了一些要求，继续跟进中</p>
             </li>
-            <li className='bg-green-50 p-3'>
-              <div className='flex justify-between border-b mb-2 pb-2'>
-                <h4>跟单人：黄健</h4>
-                <aside>跟单时间：2023-04-02</aside>
-              </div>
-              <p className='text-gray-600'>今日邀约客户到华阳店查看店铺，客户很满意，也提出了一些要求，继续跟进中今日邀约客户到华阳店查看店铺，客户很满意，也提出了一些要求，继续跟进中</p>
-            </li>
           </ul>
       <WaterMark content='中储福森客户名单' zIndex={0} />
     </>

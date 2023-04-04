@@ -8,7 +8,7 @@ export type TUser = {
   name: string;
   phone: string;
   avatar: string;
-  ruleId: number;
+  roleId: number;
   [key: string]: any
 }
 

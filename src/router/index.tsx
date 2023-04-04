@@ -76,6 +76,39 @@ export const routes: RouteObject[] = [
         }
       },
       {
+        path: 'adminer',
+        name: 'adminer',
+        element: React.createElement(lazy(() => import('../pages/adminer'))),
+        meta: {
+          title: 'adminer',
+          auth: true,
+        },
+        children: [
+          {
+            index: true,
+            element: <Navigate to='index' />
+          },
+          {
+            path: 'index',
+            name: 'adminerIndex',
+            element: React.createElement(lazy(() => import('../pages/adminer/list'))),
+            meta: {
+              title: 'note',
+              auth: true,
+            }
+          },
+          {
+            path: ':id',
+            name: 'adminerShow',
+            element: React.createElement(lazy(() => import('../pages/adminer/show'))),
+            meta: {
+              title: 'note',
+              auth: true,
+            }
+          }
+        ]
+      },
+      {
         path: 'me',
         name: 'me',
         element: React.createElement(lazy(() => import('../pages/auth/me'))),
