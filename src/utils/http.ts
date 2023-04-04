@@ -21,7 +21,7 @@ instance.interceptors.response.use(response => {
   if(response.headers['authorization']){
     store.dispatch(updateToken(response.headers['authorization']))
   }
-  return response.data;
+  return response.data
 }, (err) => {
   Toast.show({
     content: err.response.status === 401 ? '登录超时 跳转登录页面...' : err.response.data.message,
@@ -31,7 +31,7 @@ instance.interceptors.response.use(response => {
     localStorage.clear()
     setTimeout(() => {
       globalThis.location.href = import.meta.env.VITE_CLIENT_HOST + '/login'
-    }, 12000)
+    }, 2000)
   }
   return Promise.reject(err.response.data);
 });

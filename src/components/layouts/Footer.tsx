@@ -1,16 +1,15 @@
 import React from 'react'
-import { NavBar, TabBar } from 'antd-mobile'
+import { Footer as AntFooter, TabBar } from 'antd-mobile'
 import {
   AppOutline,
   UnorderedListOutline,
-  MessageOutline,
+  TeamOutline,
   UserOutline,
+  HandPayCircleOutline
 } from 'antd-mobile-icons';
 import { useLocation, useNavigate } from 'react-router-dom'
 
-type Props = {}
-
-const Footer: React.FC<Props> = (props) => {
+const Footer: React.FC = () => {
   const locat = useLocation();
   const navigate = useNavigate();
   const tabs = [
@@ -20,8 +19,13 @@ const Footer: React.FC<Props> = (props) => {
       icon: <AppOutline />,
     },
     {
-      key: '/todu',
-      title: '消息',
+      key: '/user/index',
+      title: '客户',
+      icon: <TeamOutline />,
+    },
+    {
+      key: '/note',
+      title: '记录',
       icon: <UnorderedListOutline />,
     },
     {
@@ -31,11 +35,18 @@ const Footer: React.FC<Props> = (props) => {
     },
   ]
   return (
-    <TabBar activeKey={locat.pathname} onChange={v => navigate(v)} className='fixed bottom-0 left-0 w-full border-t'>
-      {tabs.map(item => (
-        <TabBar.Item key={item.key} icon={item.icon} title={item.title} />
-      ))}
-    </TabBar>
+    <>
+      <AntFooter
+        label={ <p className='flex items-center space-x-2'><HandPayCircleOutline /> <span>中福信义公司客服管理系统</span></p> }
+        content='@ 2023 Zcfsjt.com All rights reserved'
+      />
+      <TabBar activeKey={locat.pathname} onChange={v => navigate(v)} className='fixed bottom-0 left-0 bg-white w-full border-t h-14'>
+        {tabs.map(item => (
+          <TabBar.Item key={item.key} icon={item.icon} title={item.title} className='text-3xl' />
+        ))}
+      </TabBar>
+      <p className='h-14'></p>
+    </>
   )
 }
 

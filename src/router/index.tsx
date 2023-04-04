@@ -1,22 +1,22 @@
-import React from 'react';
-import { createBrowserRouter, redirect } from 'react-router-dom'
-import type { RouteObject } from 'react-router-dom';
-import { lazy } from 'react';
-import store from '../store';
+import React from 'react'
+import { Navigate, createBrowserRouter, redirect } from 'react-router-dom'
+import type { RouteObject } from 'react-router-dom'
+import { lazy } from 'react'
+import store from '../store'
 
-declare module 'react-router'{
+declare module 'react-router' {
   interface IndexRouteObject {
-    name?: string;
+    name?: string
     meta?: {
-      title: string;
-      auth: boolean;
+      title: string
+      auth: boolean
     }
   }
-  interface NonIndexRouteObject{
-    name?: string;
+  interface NonIndexRouteObject {
+    name?: string
     meta?: {
-      title: string;
-      auth: boolean;
+      title: string
+      auth: boolean
     }
   }
 }
@@ -34,36 +34,73 @@ export const routes: RouteObject[] = [
     },
     children: [
       {
-        path: 'todu',
-        name: 'todu',
-        element: React.createElement(lazy(() => import('../pages/todu'))),
+        path: 'user',
+        name: 'user',
+        element: React.createElement(lazy(() => import('../pages/user'))),
         meta: {
-          title: 'todu',
-          auth: true
+          title: 'user',
+          auth: true,
+        },
+        children: [
+          {
+            index: true,
+            element: <Navigate to='index' />
+          },
+          {
+            path: 'index',
+            name: 'userIndex',
+            element: React.createElement(lazy(() => import('../pages/user/list'))),
+            meta: {
+              title: 'userIndex',
+              auth: true,
+            },
+          },
+          {
+            path: ':id',
+            name: 'userShow',
+            element: React.createElement(lazy(() => import('../pages/user/show'))),
+            meta: {
+              title: 'userShow',
+              auth: true,
+            },
+          },
+        ]
+      },
+      {
+        path: 'note',
+        name: 'note',
+        element: React.createElement(lazy(() => import('../pages/note'))),
+        meta: {
+          title: 'note',
+          auth: true,
         }
       },
       {
         path: 'me',
         name: 'me',
-        element: React.createElement(lazy(() => import('../pages/me'))),
+        element: React.createElement(lazy(() => import('../pages/auth/me'))),
         meta: {
           title: 'me',
-          auth: true
-        }
-      }
-    ]
+          auth: true,
+        },
+      },
+    ],
   },
   {
     path: '/login',
     name: 'login',
     element: React.createElement(lazy(() => import('../pages/auth/login'))),
-    loader(){
+    loader() {
       // 如果已经登录，还要进入login页面，将被跳转到首页
-      return store.getState().userReducer.token ? redirect('/') : null;
-    }
+      return store.getState().userReducer.token ? redirect('/') : null
+    },
+  },
+  {
+    path: '*',
+    element: <Navigate to='/' />
   }
-];
+]
 
 const router = createBrowserRouter(routes)
 
-export default router;
+export default router
