@@ -34,6 +34,19 @@ export const routes: RouteObject[] = [
     },
     children: [
       {
+        index: true,
+        element: <Navigate to='index' />
+      },
+      {
+        path: 'index',
+        name: 'appIndex',
+        element: React.createElement(lazy(() => import('../pages/Home'))),
+        meta: {
+          title: 'appIndex',
+          auth: true,
+        },
+      },
+      {
         path: 'user',
         name: 'user',
         element: React.createElement(lazy(() => import('../pages/user'))),

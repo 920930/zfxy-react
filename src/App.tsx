@@ -1,4 +1,4 @@
-import { lazy, useEffect } from 'react'
+import { lazy, useEffect, useState } from 'react'
 import {
   useLocation,
   Outlet,
@@ -25,8 +25,8 @@ const App: React.FC<{ children?: React.ReactNode }> = () => {
   const token = useSelector((state: RootState) => state.userReducer.token)
   const user = useSelector((state: RootState) => state.userReducer.user)
   if (matchs && Array.isArray(matchs)) {
-    const route = matchs[matchs.length - 1]?.route
-    if (route?.meta?.auth && !Object.keys(user).length) {
+    const route = matchs[matchs.length - 1]?.route;
+    if (route && route.meta?.auth && !Object.keys(user).length) {
       if (token) {
         // 获取用户信息 - 获取菜单列表信息
         appDispatch(userAction()).then(() => appDispatch(menuAction()))
@@ -61,7 +61,8 @@ const App: React.FC<{ children?: React.ReactNode }> = () => {
 
   return (
     <>
-      {location.pathname === '/' ? <Home /> : <Outlet />}
+      {/* {location.pathname === '/' ? <Home /> : <Outlet />} */}
+      <Outlet />
       <Footer />
       <ScrollRestoration />
     </>

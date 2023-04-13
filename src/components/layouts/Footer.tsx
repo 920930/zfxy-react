@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
   const navigate = useNavigate();
   const tabs = [
     {
-      key: '/',
+      key: '/index',
       title: '首页',
       icon: <AppOutline />,
     },
