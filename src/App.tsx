@@ -11,9 +11,7 @@ import { routes } from './router'
 import http from './utils/http'
 import { useAppDispatch, userAction, menuAction } from './store'
 import type { RootState } from './store/typings'
-
 import Footer from './components/layouts/Footer'
-const Home = lazy(() => import('./pages/Home'))
 
 /* 
   用于登录验证
@@ -35,6 +33,7 @@ const App: React.FC<{ children?: React.ReactNode }> = () => {
       }
     }
   }
+  const [path, setPath] = useState(location.pathname + location.search)
   useEffect(() => {
     let pathSearch = location.pathname + location.search
     http

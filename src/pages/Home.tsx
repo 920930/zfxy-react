@@ -7,6 +7,7 @@ import { INote, IUser } from '@/typings';
 import { Image } from 'antd-mobile';
 import { useSelector } from 'react-redux'
 import type { RootState } from '@/store/typings'
+import yy from '../../assets/yy.png'
 
 type Props = {}
 
@@ -36,7 +37,6 @@ const Home = (props: Props) => {
   }, [])
   return (
     <>
-      <Image src={`https://api.vvhan.com/api/ipCard?tip=您好 ${user.name}`} height={230} />
       <ul className='px-3 text-base py-2'>
         <h3 className='font-bold text-xl border-b mb-2 pb-0.5'>今日新增客户({datas.users.todayCount})</h3>
         {

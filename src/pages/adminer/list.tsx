@@ -11,7 +11,7 @@ import { RootState } from '@/store/typings';
 const list = () => {
   const navigate = useNavigate();
   // 当前登录用户
-  const user = useSelector((state: RootState) => state.userReducer.user)
+  const me = useSelector((state: RootState) => state.userReducer.user)
 
   const [admienrs, setAdminers] = useState<{count: number; rows: IAdminer[]}>({count: 0, rows: []});
   const [page, setPage] = useState(1)
@@ -39,14 +39,14 @@ const list = () => {
       <ul className='px-3 pt-3 space-y-3'>
         {
           admienrs?.rows.map(adminer => (
-            <li className='bg-gray-100 flex p-2 items-center text-base rounded-md'>
+            <li className='bg-gray-100 flex p-2 items-center text-base rounded-md' key={adminer.id}>
               <div className='order-1 flex-1 ml-2 text-gray-700' onClick={() => navigate(`/adminer/${adminer.id}`)}>
                 <span className='font-bold text-lg'>{adminer.name}</span>
                 <p>{adminer.phone}</p>
               </div>
               <Avatar src={adminer.avatar} style={{ '--size': '3.4rem' }} onClick={() => navigate(`/adminer/${adminer.id}`)} />
               {
-                user.roleId <= 2 ? <Button className='order-2' onClick={() => editFn(adminer.id)}>编辑</Button> : <RightOutline />
+                me.roleId == 1 ? <Button className='order-2' onClick={() => editFn(adminer.id)}>编辑</Button> : <RightOutline className='order-2' />
               }
             </li>
           ))

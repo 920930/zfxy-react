@@ -8,6 +8,7 @@ interface IBase {
 
 export interface IAdminer extends IBase {
   avatar: string;
+  roleId: number;
   users: IUser[];
   notes: INote[];
   userCount?: number;

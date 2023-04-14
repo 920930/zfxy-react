@@ -77,6 +77,15 @@ export const routes: RouteObject[] = [
               auth: true,
             },
           },
+          {
+            path: ':id/edit',
+            name: 'userEdit',
+            element: React.createElement(lazy(() => import('../pages/user/edit'))),
+            meta: {
+              title: 'userEdit',
+              auth: true,
+            },
+          },
         ]
       },
       {
@@ -106,7 +115,7 @@ export const routes: RouteObject[] = [
             name: 'adminerIndex',
             element: React.createElement(lazy(() => import('../pages/adminer/list'))),
             meta: {
-              title: 'note',
+              title: 'adminerIndex',
               auth: true,
             }
           },
@@ -115,8 +124,20 @@ export const routes: RouteObject[] = [
             name: 'adminerShow',
             element: React.createElement(lazy(() => import('../pages/adminer/show'))),
             meta: {
-              title: 'note',
+              title: 'adminerShow',
               auth: true,
+            }
+          },
+          {
+            path: ':id/edit',
+            name: 'adminerEdit',
+            element: React.createElement(lazy(() => import('../pages/adminer/edit'))),
+            meta: {
+              title: 'adminerEdit',
+              auth: true,
+            },
+            loader(){
+              return store.getState().userReducer.user.roleId === 1 ? null : redirect('/index')
             }
           }
         ]
@@ -124,7 +145,7 @@ export const routes: RouteObject[] = [
       {
         path: 'me',
         name: 'me',
-        element: React.createElement(lazy(() => import('../pages/auth/me'))),
+        element: React.createElement(lazy(() => import('../pages/me'))),
         meta: {
           title: 'me',
           auth: true,
@@ -138,12 +159,12 @@ export const routes: RouteObject[] = [
     element: React.createElement(lazy(() => import('../pages/auth/login'))),
     loader() {
       // 如果已经登录，还要进入login页面，将被跳转到首页
-      return store.getState().userReducer.token ? redirect('/') : null
+      return store.getState().userReducer.token ? redirect('/index') : null
     },
   },
   {
     path: '*',
-    element: <Navigate to='/' />
+    element: <Navigate to='/index' />
   }
 ]
 

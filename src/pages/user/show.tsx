@@ -8,6 +8,7 @@ import axios from 'axios'
 import NoteItem from '@/components/item/note3'
 import { ClockCircleOutline, UserContactOutline } from 'antd-mobile-icons'
 import { size } from '@/utils/state'
+import yy from '../../assets/yy.png'
 
 type Props = {}
 
@@ -28,7 +29,7 @@ const show = (props: Props) => {
   const loadMore = async () => getData()
   
   // 随机图片
-  const [imgUrl, setImgUrl] = useState('')
+  const [imgUrl, setImgUrl] = useState(yy)
   useEffect(() => {
     getData()
     axios.get('https://api.vvhan.com/api/bing?size=640x480&rand=sj&type=json').then(ret => setImgUrl(ret.data.data.url))
@@ -36,7 +37,6 @@ const show = (props: Props) => {
 
   const getData = () => {
     http.get<{count: number; rows: INote[]}>(`/note?page=${page}&size=${size}&userId=${param.id}`).then(ret => {
-      console.log(ret)
       setHasMore(ret.rows.length >= size ? true : false)
       ret.rows.length >= size && setPage(page + 1)
       setNotes(({rows}) => {
