@@ -73,9 +73,10 @@ const edit = (props: Props) => {
       <Form.Item name='state' valuePropName="checked" label='状态' childElementPosition='right' layout='horizontal'>
         <Switch uncheckedText='离职' checkedText='正常'  />
       </Form.Item>
-      <Form.Item name='roleId' label='角色' hidden={me.id === Number.parseInt(params.id || '2')}>
+      <Form.Item name='roleId' label='角色' hidden={me.roleId != 1}>
         <Radio.Group>
           <Space>
+            <Radio value={1}>管理员</Radio>
             <Radio value={2}>管理员</Radio>
             <Radio value={3}>员工</Radio>
           </Space>

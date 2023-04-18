@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import UserItem from '../../components/item/user'
-import { InfiniteScroll } from 'antd-mobile'
+import { InfiniteScroll, Button } from 'antd-mobile'
 import { IUser } from '@/typings'
 import http from '@/utils/http'
 import { size } from '@/utils/state'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 
 export default () => {
   const [query] = useSearchParams();
+  const navigate = useNavigate();
   const adminerId = query.get('adminerId')
   
   const [users, setUsers] = useState<{count: number; rows: IUser[]}>({
@@ -35,10 +36,11 @@ export default () => {
     })
   }
 
+  const destroy = (id: number) => {}
   return (
     <>
       <ul className='my-3 px-3 text-base'>
-        { users.rows.map(user => <UserItem key={user.id} user={user} />) }
+        { users.rows.map(user => <UserItem key={user.id} user={user} /> )}
       </ul>
       <InfiniteScroll loadMore={loadMore} hasMore={hasMore} threshold={20} />
     </>

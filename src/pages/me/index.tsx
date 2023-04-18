@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/typings'
 import axios from 'axios'
-import { PictureOutline, SetOutline, TeamOutline, RightOutline, ChatCheckOutline, UserSetOutline, ChatAddOutline } from 'antd-mobile-icons'
+import { PictureOutline, SetOutline, TeamOutline, RightOutline, UnorderedListOutline, UserSetOutline, MessageOutline } from 'antd-mobile-icons'
 import { useEffect, useState } from 'react'
 
 const Me = () => {
@@ -34,7 +34,7 @@ const Me = () => {
           <p className='mt-1.5 text-gray-700'>手机号：{adminer.phone}</p>
         </div>
       </div>
-      <ul className="grid grid-cols-2 px-3 py-2 text-base border-t-8 border-gray-100">
+      <ul className={`grid grid-cols-${adminer.roleId != 3 ? 3 : 2} px-3 py-2 text-base border-t-8 border-gray-100`}>
         <li className='flex flex-col items-center'>
           <PictureOutline className='text-4xl mb-2' />
           <span>修改头像</span>
@@ -43,6 +43,12 @@ const Me = () => {
           <SetOutline className='text-4xl mb-2' />
           <span>修改信息</span>
         </li>
+        { adminer.roleId != 3 &&
+          <li className='flex flex-col items-center' onClick={() => navigate(`/adminer/${adminer.id}/edit`)}>
+            <UnorderedListOutline className='text-4xl mb-2'/>
+            <span>行业分类</span>
+          </li>
+        }
       </ul>
       <ul className="py-2 text-base border-y-8 border-gray-100 space-y-2">
         <li onClick={() => navigate(`/user/index?adminerId=${adminer.id}`)} className='flex items-center px-3 border-b pb-2'>
@@ -55,14 +61,9 @@ const Me = () => {
           <span className='flex-1'>新增客户</span>
           <RightOutline className='text-gray-400' />
         </li>
-        <li onClick={() => navigate(`/note?adminerId=${adminer.id}`)} className='flex items-center border-b py-2 px-3 border-t-8 border-gray-100'>
-          <ChatCheckOutline className='text-3xl mr-3' />
+        <li onClick={() => navigate(`/note?adminerId=${adminer.id}`)} className='flex items-center pt-2 px-3 border-t-8 border-gray-100'>
+          <MessageOutline className='text-3xl mr-3' />
           <span className='flex-1'>我的记录</span>
-          <RightOutline className='text-gray-400' />
-        </li>
-        <li onClick={() => navigate(`/note?adminerId=${adminer.id}`)} className='flex items-center px-3'>
-          <ChatAddOutline className='text-3xl mr-3' />
-          <span className='flex-1'>新增记录</span>
           <RightOutline className='text-gray-400' />
         </li>
       </ul>
@@ -74,7 +75,7 @@ const Me = () => {
             <RightOutline className='text-gray-400' />
           </li>
           {
-            adminer.roleId === 1 && (<li onClick={() => navigate(`/adminer/0/edit`)} className='flex space-x-3 border-t-8 border-gray-100 py-2 px-3 items-center'>
+            adminer.roleId != 3 && (<li onClick={() => navigate(`/adminer/0/edit`)} className='flex space-x-3 border-t-8 border-gray-100 py-2 px-3 items-center'>
             <UserSetOutline className='text-3xl' />
             <span className='flex-1'>新增员工</span>
             <RightOutline className='text-gray-400' />

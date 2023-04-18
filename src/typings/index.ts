@@ -4,6 +4,7 @@ interface IBase {
   phone: string;
   state: number;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface IAdminer extends IBase {
@@ -17,8 +18,10 @@ export interface IAdminer extends IBase {
 
 export interface IUser extends IBase {
   desc: string;
-  trade?: ITrade;
+  trade?: TTrade;
   adminer?: IAdminer;
+  adminerId: number;
+  tradeId: number;
 }
 
 export interface INote extends Omit<IBase, 'name' | 'phone'> {
@@ -27,9 +30,8 @@ export interface INote extends Omit<IBase, 'name' | 'phone'> {
   adminer: Pick<IAdminer, 'id' | 'name'>;
 }
 
-export interface ITrade extends Omit<IBase, 'phone'> {
-
-}
+export type TTrade = Pick<IBase, 'id' | 'name' | 'state'>
+export interface ITrade extends Omit<IBase, 'phone'> { }
 
 export type TMe = Omit<IAdminer, 'users' | 'notes'>
 

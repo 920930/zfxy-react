@@ -30,7 +30,7 @@ const kehu = (props: Props) => {
             <span className='text-gray-500'>{user.createdAt}</span>
           </section>
           <p className='text-gray-500 pt-1 border-t mt-1 text2'>{user.desc}</p>
-          {props.children}
+          {props.children && <aside className='flex justify-end space-x-3'>{props.children}</aside>}
         </section>
       </section>
     </li>

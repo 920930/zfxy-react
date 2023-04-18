@@ -136,8 +136,13 @@ export const routes: RouteObject[] = [
               title: 'adminerEdit',
               auth: true,
             },
-            loader(){
-              return store.getState().userReducer.user.roleId === 1 ? null : redirect('/index')
+            loader(e){
+              const uid = Number.parseInt(e.params.id || '0')
+              const me = store.getState().userReducer.user;
+              if(me.id === uid) return null
+              if(me.roleId === 3) return redirect('/me')
+              return null
+              // return store.getState().userReducer.user.roleId === 1 ? null : redirect('/index')
             }
           }
         ]
