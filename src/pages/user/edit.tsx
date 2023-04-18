@@ -45,11 +45,13 @@ const edit = () => {
 
   // 提交表单
   const onFinish = (v: any) => {
-    if(param.id) param.id === '0' ? storeFn(v) : editFn(param.id, v)
+    if(param.id) {
+      param.id === '0' ? storeFn(v) : editFn(param.id, v)
+    }
   }
   const navigate = useNavigate()
   const storeFn = (v: any) => {
-    http.post('/user/store', v).then(() => navigate('/me'))
+    http.post<{id: number}>('/user/store', v).then(ret => navigate(`/user/${ret.id}`))
   }
   const editFn = (uid: string, v: any) => {
     http.put(`/user/${uid}`, v).then(() => navigate(`/user/${uid}`))
@@ -64,7 +66,8 @@ const edit = () => {
     <>
       <Form
         initialValues={{
-          state: 2,
+          state: 1,
+          adminerId: `${me.id}-${me.name}`,
         }}
         form={form}
         onFinish={onFinish}
