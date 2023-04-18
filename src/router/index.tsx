@@ -156,6 +156,15 @@ export const routes: RouteObject[] = [
           auth: true,
         },
       },
+      {
+        path: 'trade',
+        name: 'trade',
+        element: React.createElement(lazy(() => import('../pages/trade'))),
+        meta: {
+          title: 'trade',
+          auth: true,
+        },
+      },
     ],
   },
   {

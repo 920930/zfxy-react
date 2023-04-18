@@ -44,7 +44,7 @@ const Me = () => {
           <span>修改信息</span>
         </li>
         { adminer.roleId != 3 &&
-          <li className='flex flex-col items-center' onClick={() => navigate(`/adminer/${adminer.id}/edit`)}>
+          <li className='flex flex-col items-center' onClick={() => navigate(`/trade`)}>
             <UnorderedListOutline className='text-4xl mb-2'/>
             <span>行业分类</span>
           </li>
