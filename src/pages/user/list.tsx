@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import UserItem from '../../components/item/user'
-import { InfiniteScroll, Button } from 'antd-mobile'
+import { InfiniteScroll, Button, Form, Input, Toast } from 'antd-mobile'
 import { IUser } from '@/typings'
 import http from '@/utils/http'
 import { size } from '@/utils/state'
@@ -8,7 +8,6 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 
 export default () => {
   const [query] = useSearchParams();
-  const navigate = useNavigate();
   const adminerId = query.get('adminerId')
   
   const [users, setUsers] = useState<{count: number; rows: IUser[]}>({
@@ -20,14 +19,16 @@ export default () => {
   const loadMore = async () => getData()
   useEffect(() => getData(), [])
   
-  const getData = () => {
-    let url = `/user?page=${page}&size=${size}`
+  const getData = (p: number | null = null, search: string | null = null) => {
+    let url = `/user?page=${p ?? page}&size=${size}`
     adminerId && (url += `&adminerId=${adminerId}`)
+    search && (url += `${search}`)
     http.get<{count: number; rows: IUser[]}>(url).then(ret => {
       setHasMore(ret.rows.length >= size ? true : false)
       ret.rows.length >= size && setPage(page + 1)
       setUsers(({count, rows}) => {
         ret.rows.length && (rows = [...rows, ...ret.rows]);
+        p && (rows = ret.rows);
         return {
           count,
           rows
@@ -36,10 +37,41 @@ export default () => {
     })
   }
 
-  const destroy = (id: number) => {}
+  const [form] = Form.useForm();
+  const onFinish = (v: {name?: string; phone?: string}) => {
+    if(!v.name && !v.phone) {
+      return Toast.show({
+        content: '搜索内容不能为空'
+      })
+    }
+    let search = ''
+    v.name && (search += `&name=${v.name}`)
+    v.phone && (search += `&phone=${v.phone}`)
+    setPage(1)
+    getData(1, search)
+  }
+
+  const resetFn = () => {
+    form.resetFields()
+    setPage(1)
+    getData(1)
+  }
   return (
     <>
-      <ul className='my-3 px-3 text-base'>
+      <Form form={form} layout='horizontal' onFinish={onFinish} footer={
+        <div className='flex space-x-2'>
+          <Button block color='primary' size='large' type='submit' className='flex-1'>搜索</Button>
+          <Button size='large' onClick={resetFn}>重置</Button>
+        </div>
+      }>
+        <Form.Item name='name' label='用户名'>
+          <Input placeholder='请输入用户名' />
+        </Form.Item>
+        <Form.Item name='phone' label='用户手机'>
+          <Input placeholder='请输入用户手机' />
+        </Form.Item>
+      </Form>
+      <ul className='mb-3 px-3 text-base'>
         { users.rows.map(user => <UserItem key={user.id} user={user} /> )}
       </ul>
       <InfiniteScroll loadMore={loadMore} hasMore={hasMore} threshold={20} />

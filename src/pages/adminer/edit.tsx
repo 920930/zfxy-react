@@ -33,10 +33,10 @@ const edit = (props: Props) => {
     params.id ? params.id == '0' ? storeFn(values) : editFn(values) : ''
   }
   const editFn = (values: any) => {
-    http.put(`/adminer/${params.id}/edit`, values).then(() => navigate('/adminer'))
+    http.put(`/adminer/${params.id}/edit`, values).then(() => navigate('/adminer/index'))
   }
   const storeFn = (values: any) => {
-    http.post(`/adminer/store`, values).then(() => navigate('/adminer'))
+    http.post(`/adminer/store`, values).then(() => navigate('/adminer/index'))
   }
 
   const [passRules, setPassRules] = useState(false)

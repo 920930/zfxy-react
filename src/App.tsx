@@ -9,7 +9,7 @@ import {
 import { useSelector } from 'react-redux'
 import { routes } from './router'
 import http from './utils/http'
-import { useAppDispatch, userAction, menuAction } from './store'
+import { useAppDispatch, userAction } from './store'
 import type { RootState } from './store/typings'
 import Footer from './components/layouts/Footer'
 
@@ -27,13 +27,12 @@ const App: React.FC<{ children?: React.ReactNode }> = () => {
     if (route && route.meta?.auth && !Object.keys(user).length) {
       if (token) {
         // 获取用户信息 - 获取菜单列表信息
-        appDispatch(userAction()).then(() => appDispatch(menuAction()))
+        appDispatch(userAction())
       } else {
         return <Navigate to="/login" />
       }
     }
   }
-  const [path, setPath] = useState(location.pathname + location.search)
   useEffect(() => {
     let pathSearch = location.pathname + location.search
     http

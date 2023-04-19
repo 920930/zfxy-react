@@ -34,7 +34,7 @@ const Me = () => {
           <p className='mt-1.5 text-gray-700'>手机号：{adminer.phone}</p>
         </div>
       </div>
-      <ul className={`grid grid-cols-${adminer.roleId != 3 ? 3 : 2} px-3 py-2 text-base border-t-8 border-gray-100`}>
+      <ul className={`grid ${adminer.roleId != 3 ? 'grid-cols-3' : 'grid-cols-2'} px-3 py-2 text-base border-t-8 border-gray-100`}>
         <li className='flex flex-col items-center'>
           <PictureOutline className='text-4xl mb-2' />
           <span>修改头像</span>
