@@ -8,10 +8,10 @@ import {
   Switch,
   Space
 } from 'antd-mobile'
-import http from '@/utils/http'
-import { IAdminer } from '@/typings'
+import http from '../../utils/http'
+import { IAdminer } from '../../typings'
 import { useSelector } from 'react-redux'
-import { RootState } from '@/store/typings'
+import { RootState } from '../../store/typings'
 
 type Props = {}
 

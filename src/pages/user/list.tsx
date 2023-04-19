@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import UserItem from '../../components/item/user'
 import { InfiniteScroll, Button, Form, Input, Toast } from 'antd-mobile'
-import { IUser } from '@/typings'
-import http from '@/utils/http'
-import { size } from '@/utils/state'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import { IUser } from '../../typings'
+import http from '../../utils/http'
+import { size } from '../../utils/state'
+import { useSearchParams } from 'react-router-dom'
 
 export default () => {
   const [query] = useSearchParams();

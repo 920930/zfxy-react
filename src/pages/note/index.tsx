@@ -1,8 +1,8 @@
-import NoteItem from '@/components/item/note1'
+import NoteItem from '../../components/item/note1'
 import { useEffect, useState } from 'react'
-import { size } from '@/utils/state'
-import http from '@/utils/http'
-import { INote } from '@/typings'
+import { size } from '../../utils/state'
+import http from '../../utils/http'
+import { INote } from '../../typings'
 import { InfiniteScroll } from 'antd-mobile'
 import { useSearchParams } from 'react-router-dom'
 

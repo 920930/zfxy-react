@@ -1,7 +1,7 @@
-import { IUser } from '@/typings';
+import { IUser } from '../../typings';
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { userState } from '@/utils/state';
+import { userState } from '../../utils/state';
 import {PhoneFill} from 'antd-mobile-icons'
 
 type Props = {

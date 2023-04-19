@@ -1,4 +1,4 @@
-import http from '@/utils/http'
+import http from '../../utils/http'
 import { Button, Input, List, Modal, Space, Switch } from 'antd-mobile'
 import { useEffect, useState } from 'react'
 

@@ -1,6 +1,6 @@
-import { INote } from '@/typings';
+import { INote } from '../../typings';
 import { useNavigate } from 'react-router-dom';
-import { userState } from '@/utils/state';
+import { userState } from '../../utils/state';
 import { UserOutline } from 'antd-mobile-icons';
 
 type Props = {

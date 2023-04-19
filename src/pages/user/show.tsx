@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import http from '@/utils/http'
+import http from '../../utils/http'
 import { Button, Image, WaterMark, InfiniteScroll, Modal, TextArea } from 'antd-mobile'
-import { INote, IUser } from '@/typings'
-import { userState } from '@/utils/state'
+import { INote, IUser } from '../../typings'
+import { userState } from '../../utils/state'
 import axios from 'axios'
-import NoteItem from '@/components/item/note3'
+import NoteItem from '../../components/item/note3'
 import { ClockCircleOutline, UserContactOutline } from 'antd-mobile-icons'
-import { size } from '@/utils/state'
+import { size } from '../../utils/state'
 import yy from '../../assets/yy.png'
 import { useSelector } from 'react-redux'
-import { RootState } from '@/store/typings'
+import { RootState } from '../../store/typings'
 
 type Props = {}
 

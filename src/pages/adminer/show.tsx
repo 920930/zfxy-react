@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Avatar, Image, Button, Input } from 'antd-mobile'
-import UserItem from '@/components/item/user';
-import Note2 from '@/components/item/note2';
-import http from '@/utils/http'
-import { IAdminer } from '@/typings';
+import { Avatar, Image } from 'antd-mobile'
+import UserItem from '../../components/item/user';
+import Note2 from '../../components/item/note2';
+import http from '../../utils/http'
+import { IAdminer } from '../../typings';
 
 type Props = {}
 

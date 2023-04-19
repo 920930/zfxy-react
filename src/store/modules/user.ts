@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { TToken, TUser } from '../typings';
-import { getLocalStorage, setLocalStorage, clearStorage } from '@/utils/storage';
-import http from '@/utils/http';
+import { getLocalStorage, setLocalStorage, clearStorage } from '../../utils/storage';
+import http from '../../utils/http';
 
 const userSlice = createSlice({
   name: 'user',

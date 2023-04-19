@@ -2,11 +2,11 @@ import { RightOutline } from 'antd-mobile-icons'
 import { Avatar, Button, InfiniteScroll, Toast } from 'antd-mobile'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react';
-import http from '@/utils/http';
-import { size } from '@/utils/state';
-import { IAdminer } from '@/typings';
+import http from '../../utils/http';
+import { size } from '../../utils/state';
+import { IAdminer } from '../../typings';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/store/typings';
+import { RootState } from '../../store/typings';
 
 const list = () => {
   const navigate = useNavigate();

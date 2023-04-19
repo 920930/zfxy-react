@@ -1,11 +1,11 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { Form, Input, Button, Radio, Space, TextArea, Picker, Switch } from 'antd-mobile'
-import http from '@/utils/http'
+import http from '../../utils/http'
 import { useEffect, useState } from 'react'
-import { IAdminer, IUser, TTrade } from '@/typings'
+import { IAdminer, IUser, TTrade } from '../../typings'
 import { PickerValue } from 'antd-mobile/es/components/picker-view'
 import { useSelector } from 'react-redux'
-import { RootState } from '@/store/typings'
+import { RootState } from '../../store/typings'
 
 const edit = () => {
   const [form] = Form.useForm()

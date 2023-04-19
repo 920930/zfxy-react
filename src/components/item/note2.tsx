@@ -1,4 +1,4 @@
-import { INote } from '@/typings';
+import { INote } from '../../typings';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ClockCircleOutline, UserContactOutline } from 'antd-mobile-icons'

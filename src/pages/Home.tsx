@@ -2,14 +2,8 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import UserItem from '../components/item/user';
 import NoteItem from '../components/item/note1';
-import http from '@/utils/http';
-import { INote, IUser } from '@/typings';
-import { Image } from 'antd-mobile';
-import { useSelector } from 'react-redux'
-import type { RootState } from '@/store/typings'
-import yy from '../../assets/yy.png'
-
-type Props = {}
+import http from '../utils/http';
+import { INote, IUser } from '../typings';
 
 type TData = {
   users: {
@@ -26,8 +20,7 @@ type TData = {
   }
 }
 
-const Home = (props: Props) => {
-  const user = useSelector((state: RootState) => state.userReducer.user)
+const Home = () => {
   const [datas, setDatas] = useState<TData>({
     users: {today: [], old: [], todayCount: 0, oldCount: 0},
     notes: {today: [], old: [], todayCount: 0, oldCount: 0},
