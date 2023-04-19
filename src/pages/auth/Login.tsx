@@ -20,7 +20,7 @@ const Login = (props: Props) => {
 
   const onFinish = (value: { phone: string; password: string }) => {
     dispatch(loginAction({ ...value, code: code ?? '' })).then(() =>
-      navigate('/')
+      navigate('/index')
     )
   }
 
