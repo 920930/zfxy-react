@@ -3,12 +3,12 @@ import { Button, Input, List, Modal, Space, Switch } from 'antd-mobile'
 import { useEffect, useState } from 'react'
 
 const index = () => {
-  const [trades, setTrades] = useState<{id: number; name: string; state: boolean}[]>([])
+  const [markets, setMarket] = useState<{id: number; name: string; state: boolean}[]>([])
   useEffect(() => {
     getData()
   }, [])
 
-  const getData = () => http.get<{id: number; name: string; state: boolean}[]>('/trade?state=1').then(ret => setTrades(ret))
+  const getData = () => http.get<{id: number; name: string; state: boolean}[]>('/market').then(ret => setMarket(ret))
 
   const modelFn = (id: number = 0, name = '', state = true) => {
     let value = {
@@ -28,9 +28,9 @@ const index = () => {
       onConfirm() {
         id == 0
           ? 
-            http.post('/trade/store', value).then(() => getData())
+            http.post('/market/store', value).then(() => getData())
           : 
-            http.put(`/trade/${id}`, value).then(() => getData())
+            http.put(`/market/${id}`, value).then(() => getData())
       },
       confirmText: '确定',
     })
@@ -38,9 +38,7 @@ const index = () => {
 
   return (
     <List header={<Button size='small' onClick={() => modelFn()}>新增</Button>}>
-      {trades.map(item => <List.Item key={item.id} onClick={() => modelFn(item.id, item.name, item.state)}>
-        <span className={item.state ? '' : 'text-red-400'}>{item.name}</span>
-      </List.Item>)}
+      {markets.map(item => <List.Item key={item.id} onClick={() => modelFn(item.id, item.name)}><span className={item.state ? '' : 'text-red-400'}>{item.name}</span></List.Item>)}
     </List>
   )
 }

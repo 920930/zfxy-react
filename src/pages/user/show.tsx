@@ -12,9 +12,7 @@ import yy from '../../assets/yy.png'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/typings'
 
-type Props = {}
-
-const show = (props: Props) => {
+const show = () => {
   const adminer = useSelector((state: RootState) => state.userReducer.user)
   const param = useParams()
   const navigate = useNavigate()
@@ -97,17 +95,21 @@ const show = (props: Props) => {
         {/* <Button size='small' color='danger'>删除</Button> */}
         </aside>)
       }
-      <section className='h-20 relative'>
-        <div className='absolute w-5/6 h-28 left-1/2 -top-12 z-50 -translate-x-1/2 shadow-xl bg-white rounded-md bg-opacity-90 p-3 text-base'>
+      <section className='h-28 relative'>
+        <div className='absolute w-5/6 h-44 left-1/2 -top-20 z-50 -translate-x-1/2 shadow-xl bg-white rounded-md bg-opacity-90 px-3 py-2 text-base'>
           <ul className='grid grid-cols-2 gap-x-3.5 gap-y-2.5'>
             <li><span className='font-bold'>客户：</span>{user?.name}</li>
             <li><span className={`text-white px-1 rounded-sm py-0.5 ${userState[user?user.state:0].class}`}>{userState[user?user.state:0].title}</span></li>
             <li className='col-span-2'><span className='font-bold'>电话：</span>{user?.phone}</li>
-            <li className='col-span-2'><span className='font-bold'>行业：</span>{user?.trade?.name}</li>
+            <li><span className='font-bold'>性别：</span>{user?.sex ? '女' : '男'}</li>
+            <li><span className='font-bold'>行业：</span>{user?.trade?.name}</li>
+            <li><span className='font-bold'>租赁面积：</span>{user?.area}</li>
+            <li><span className='font-bold'>租赁时长：</span>{user?.timer}</li>
+            <li className='col-span-2'><span className='font-bold'>地址：</span>{user?.address}</li>
           </ul>
         </div>
       </section>
-      <p className='px-3 text-base'><span className='font-bold'>简介：</span>{user?.desc}</p>
+      <p className='px-3 text-base'><span className='font-bold'>客户简介：</span>{user?.desc}</p>
       <p className='text-base mt-3 px-3 flex items-center space-x-2'><ClockCircleOutline /><span>{user?.createdAt}</span></p>
       <p className='text-base mt-3 px-3 flex items-center space-x-2'><UserContactOutline /><span>{user?.adminer?.name}</span></p>
       <h3 className='font-bold text-lg mt-3 px-3 border-t pt-3 flex justify-between items-center'>

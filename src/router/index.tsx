@@ -3,6 +3,7 @@ import { Navigate, createBrowserRouter, redirect } from 'react-router-dom'
 import type { RouteObject } from 'react-router-dom'
 import { lazy } from 'react'
 import store from '../store'
+import App from '../App'
 
 declare module 'react-router' {
   interface IndexRouteObject {
@@ -27,7 +28,8 @@ export const routes: RouteObject[] = [
   {
     path: '/',
     name: 'app',
-    element: React.createElement(lazy(() => import('../App'))),
+    element: <App />,
+    // errorElement: <Navigate to='/index' />,
     meta: {
       title: 'app首页',
       auth: true,
@@ -162,6 +164,15 @@ export const routes: RouteObject[] = [
         element: React.createElement(lazy(() => import('../pages/trade'))),
         meta: {
           title: 'trade',
+          auth: true,
+        },
+      },
+      {
+        path: 'market',
+        name: 'market',
+        element: React.createElement(lazy(() => import('../pages/market'))),
+        meta: {
+          title: 'market',
           auth: true,
         },
       },

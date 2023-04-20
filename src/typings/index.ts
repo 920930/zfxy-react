@@ -18,10 +18,16 @@ export interface IAdminer extends IBase {
 
 export interface IUser extends IBase {
   desc: string;
+  sex: boolean;
+  address: string;
+  area: string;
+  timer: string;
   trade?: TTrade;
   adminer?: IAdminer;
+  market?: TTrade;
   adminerId: number;
   tradeId: number;
+  marketId: number;
 }
 
 export interface INote extends Omit<IBase, 'name' | 'phone'> {

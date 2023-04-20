@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/typings'
 import axios from 'axios'
-import { PictureOutline, SetOutline, TeamOutline, RightOutline, UnorderedListOutline, UserSetOutline, MessageOutline } from 'antd-mobile-icons'
+import { PictureOutline, SetOutline, TeamOutline, RightOutline, UnorderedListOutline, UserSetOutline, MessageOutline, TravelOutline } from 'antd-mobile-icons'
 import { useEffect, useState } from 'react'
 
 const Me = () => {
@@ -34,7 +34,7 @@ const Me = () => {
           <p className='mt-1.5 text-gray-700'>手机号：{adminer.phone}</p>
         </div>
       </div>
-      <ul className={`grid ${adminer.roleId != 3 ? 'grid-cols-3' : 'grid-cols-2'} px-3 py-2 text-base border-t-8 border-gray-100`}>
+      <ul className={`grid ${adminer.roleId != 3 ? 'grid-cols-4' : 'grid-cols-2'} px-3 py-2 text-base border-t-8 border-gray-100`}>
         <li className='flex flex-col items-center'>
           <PictureOutline className='text-4xl mb-2' />
           <span>修改头像</span>
@@ -47,6 +47,12 @@ const Me = () => {
           <li className='flex flex-col items-center' onClick={() => navigate(`/trade`)}>
             <UnorderedListOutline className='text-4xl mb-2'/>
             <span>行业分类</span>
+          </li>
+        }
+        { adminer.roleId != 3 &&
+          <li className='flex flex-col items-center' onClick={() => navigate(`/market`)}>
+            <TravelOutline className='text-4xl mb-2' />
+            <span>项目公司</span>
           </li>
         }
       </ul>
