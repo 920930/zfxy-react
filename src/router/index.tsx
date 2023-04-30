@@ -29,7 +29,7 @@ export const routes: RouteObject[] = [
     path: '/',
     name: 'app',
     element: <App />,
-    // errorElement: <Navigate to='/index' />,
+    errorElement: <Navigate to='/index' />,
     meta: {
       title: 'app首页',
       auth: true,

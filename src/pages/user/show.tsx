@@ -96,8 +96,8 @@ const show = () => {
         </aside>)
       }
       <section className='h-32 relative'>
-        <div className='absolute w-5/6 h-52 left-1/2 -top-24 z-50 -translate-x-1/2 shadow-xl bg-white rounded-md bg-opacity-90 px-3 py-2 text-base'>
-          <ul className='grid grid-cols-2 gap-x-3.5 gap-y-2.5'>
+        <div className='absolute h-48 left-3 right-3 -top-24 z-50 shadow-xl bg-white rounded-md bg-opacity-90 p-2 text-base'>
+          <ul className='grid grid-cols-2 gap-x-3.5 gap-y-1.5'>
             <li><span className='font-bold'>客户：</span>{user?.name}</li>
             <li><span className={`text-white px-1 rounded-sm py-0.5 ${userState[user?user.state:0].class}`}>{userState[user?user.state:0].title}</span></li>
             <li className='col-span-2'><span className='font-bold'>电话：</span>{user?.phone}</li>
