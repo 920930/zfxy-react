@@ -24,10 +24,9 @@ export interface IUser extends IBase {
   timer: string;
   trade?: TTrade;
   adminer?: IAdminer;
-  market?: TTrade;
+  markets?: { id: number; name: string }[];
   adminerId: number;
   tradeId: number;
-  marketId: number;
 }
 
 export interface INote extends Omit<IBase, 'name' | 'phone'> {

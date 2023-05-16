@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { Form, Input, Button, Radio, Space, TextArea, Picker, Switch } from 'antd-mobile'
+import { Form, Input, Button, Radio, Space, TextArea, Picker, Switch, Popup, CheckList } from 'antd-mobile'
 import http from '../../utils/http'
 import { useEffect, useState } from 'react'
-import { IAdminer, IUser, TTrade } from '../../typings'
+import { IUser, TTrade } from '../../typings'
 import { PickerValue } from 'antd-mobile/es/components/picker-view'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/typings'
@@ -10,27 +10,27 @@ import { RootState } from '../../store/typings'
 const edit = () => {
   const [form] = Form.useForm()
   const me = useSelector((state: RootState) => state.userReducer.user)
-  const [user, setUser] = useState<IUser>()
+  // const [user, setUser] = useState<IUser>()
   // 路由params获取用户id，0新增,其他更新
   const param = useParams()
   const id = Number.parseInt(param.id || '0')
   useEffect(() => {
     if(id !== 0) {
       http.get<IUser>(`/user/${param.id}`).then(ret => {
-        setUser(ret)
+        // setUser(ret)
         form.setFieldsValue(ret)
         form.setFieldValue('tradeId', `${ret.tradeId}-${ret.trade?.name}`)
-        form.setFieldValue('marketId', `${ret.marketId}-${ret.market?.name}`)
+        const markes = ret.markets?.map(item => (`${item.id}-${item.name}`));
+        form.setFieldValue('markets', markes?.join(','))
         form.setFieldValue('adminerId', `${ret.adminerId}-${ret.adminer?.name}`)
+        if(ret.markets) {
+          const de = ret.markets.map(item => item.id + '')
+          setMarkeDefault(de)
+        }
       })
     }
   }, [param.id])
 
-  // 员工列表
-  const [adminers, setAdminers] = useState<{label: string; value: string}[]>([])
-  useEffect(() => {
-    http.get<IAdminer[]>('/adminer/all').then(ret => setAdminers(ret.map(item => ({label: item.name, value: `${item.id}`}))))
-  }, [])
   // 行业列表
   const [trades, setTrades] = useState<{label: string; value: string}[]>([])
   useEffect(() => {
@@ -41,18 +41,18 @@ const edit = () => {
   useEffect(() => {
     http.get<TTrade[]>('/market').then(ret => setMarkets(ret.map(item => ({label: item.name, value: `${item.id}`}))))
   }, [])
+  // 项目显示隐藏
+  const [markShow, setMarkShow] = useState(false);
+  // 项目选中初始数据
+  const [marketDefault, setMarkeDefault] = useState<string[]>([]);
   // 如果是更新行业或员工id
-  const [pickVisible, setPickVisible] = useState<{type: 'trade' | 'adminer' | 'market'; bool: boolean}>({type: 'trade', bool: false})
+  const [pickVisible, setPickVisible] = useState<boolean>(false)
   const [pickValue, setPickValue] = useState<PickerValue[]>([])
   const onConfirmPickValue = (v: PickerValue[]) => {
     if(!v[0]) return
     setPickValue(v)
-    const vv =  pickVisible.type === 'trade'
-      ? trades.find(item => item.value === v[0])
-      : pickVisible.type === 'adminer'
-        ? adminers.find(item => item.value === v[0])
-        : markets.find(item => item.value === v[0])
-    form.setFieldValue(pickVisible.type === 'trade' ? 'tradeId' : pickVisible.type === 'adminer' ? 'adminerId' : 'marketId', `${vv?.value}-${vv?.label}`)
+    const vv = trades.find(item => item.value === v[0])
+    form.setFieldValue('tradeId', `${vv?.value}-${vv?.label}`)
   }
 
   // 提交表单
@@ -69,11 +69,9 @@ const edit = () => {
     http.put(`/user/${uid}`, v).then(() => navigate(`/user/${uid}`))
   }
 
-  const showPickFn = (type: 'trade' | 'adminer' | 'market' = 'trade') => {
-    setPickVisible({type, bool: true})
-    // 如果是新增客户，v = underfined
-    // const v = type === 'trade' ? `${user?.tradeId}` : type === 'adminer' ? `${user?.adminerId}` :  `${user?.marketId}`;
-    // v && setPickValue([v])
+  const marketToForm = (val: string[]) => {
+    const ret = markets.filter(item => val.includes(item.value)).map(item => `${item.value}-${item.label}`)
+    form.setFieldValue('markets', ret.join(','))
   }
   return (
     <>
@@ -117,24 +115,36 @@ const edit = () => {
             </Space>
           </Radio.Group>
         </Form.Item>
-        <Form.Item name='tradeId' label='客户行业' rules={[{ required: true }]} onClick={() => showPickFn('trade')}>
+        <Form.Item name='tradeId' label='客户行业' rules={[{ required: true }]} onClick={() => setPickVisible(true)}>
           <Input placeholder='请选择客户行业' readOnly />
         </Form.Item>
-        <Form.Item name='marketId' label='意向市场' rules={[{ required: true }]} onClick={() => showPickFn('market')}>
+        <Form.Item name='markets' label='意向市场' rules={[{ required: true }]} onClick={() => setMarkShow(true)}>
           <Input placeholder='请选择意向市场' readOnly />
-        </Form.Item>
-        <Form.Item name='adminerId' label='员工' hidden={me.roleId == 3} rules={[{ required: true }]} onClick={() => showPickFn('adminer')}>
-          <Input placeholder='请选择员工' readOnly />
         </Form.Item>
       </Form>
 
       <Picker
-        columns={[pickVisible.type === 'trade' ? trades : pickVisible.type === 'adminer' ? adminers : markets]}
-        visible={pickVisible.bool}
-        onClose={() => setPickVisible({bool: false, type: 'trade'})}
+        columns={[trades]}
+        visible={pickVisible}
         value={pickValue}
         onConfirm={onConfirmPickValue}
       />
+
+      <Popup
+        visible={markShow}
+        showCloseButton
+        closeOnMaskClick
+        onClose={() => setMarkShow(false)}
+        bodyStyle={{ height: '50vh' }}
+      >
+        <div style={{ padding: '38px 24px', overflowY: 'scroll', height: '100%' }}>
+        <CheckList multiple defaultValue={marketDefault} onChange={marketToForm}>
+          {
+            markets.map(item => <CheckList.Item value={item.value} key={item.value}>{item.label}</CheckList.Item>)
+          }
+        </CheckList>
+        </div>
+      </Popup>
     </>
   )
 }

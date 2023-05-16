@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import http from '../../utils/http'
-import { Button, Image, WaterMark, InfiniteScroll, Modal, TextArea } from 'antd-mobile'
-import { INote, IUser } from '../../typings'
+import { Button, Image, WaterMark, InfiniteScroll, Modal, TextArea, Picker } from 'antd-mobile'
+import { INote, IUser, IAdminer } from '../../typings'
 import { userState } from '../../utils/state'
 import axios from 'axios'
 import NoteItem from '../../components/item/note3'
@@ -11,16 +11,18 @@ import { size } from '../../utils/state'
 import yy from '../../assets/yy.png'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/typings'
+import { PickerValue } from 'antd-mobile/es/components/picker-view'
 
 const show = () => {
-  const adminer = useSelector((state: RootState) => state.userReducer.user)
+  const me = useSelector((state: RootState) => state.userReducer.user)
   const param = useParams()
   const navigate = useNavigate()
 
   const [user, setUser] = useState<IUser>()
-  useEffect(() => {
+  const getUser = () => {
     http.get<IUser>(`/user/${param.id}`).then(ret => setUser(ret))
-  }, [])
+  }
+  useEffect(getUser, [])
 
   const [page, setPage] = useState(1)
   const [notes, setNotes] = useState<{count: number; rows: INote[]}>({
@@ -85,18 +87,34 @@ const show = () => {
     })
   }
 
+  // 管理员转移客户到另一个员工名下
+  const [adminers, setAdminers] = useState<{label: string; value: string}[]>([])
+  const [pickVisible, setPickVisible] = useState<boolean>(false)
+  const userToUserFn = () => {
+    http.get<IAdminer[]>('/adminer/all')
+    .then(ret => setAdminers(ret.map(item => ({label: item.name, value: `${item.id}`}))))
+    .then(() => setPickVisible(true))
+  }
+  const onConfirmPickValue = (v: PickerValue[]) => {
+    if(!v[0]) return
+    http.put(`/user/${param.id}/move`, { aid: v[0] }).then(() => getUser())
+    // setPickValue(v)
+  }
   return (
     <>
-      <Image src={imgUrl} height={200} fit='cover' />
-      {
-        (adminer.roleId <= 2 || ( user && adminer.id === user.adminerId)) &&
-        (<aside className='absolute right-5 top-4 space-x-2'>
-        <Button size='small' color='primary' onClick={() => navigate(`/user/${param.id}/edit`)}>编辑</Button>
-        {/* <Button size='small' color='danger'>删除</Button> */}
-        </aside>)
-      }
-      <section className='h-32 relative'>
-        <div className='absolute h-48 left-3 right-3 -top-24 z-50 shadow-xl bg-white rounded-md bg-opacity-90 p-2 text-base'>
+      <Image src={imgUrl} height={160} fit='cover' />
+      <aside className='absolute right-5 top-4 space-x-2'>
+        {me.id === user?.adminerId && <Button size='small' color='primary' onClick={() => navigate(`/user/${param.id}/edit`)}>编辑</Button>}
+        {
+          me.roleId <= 2 &&
+          <>
+          <Button size='small' color='primary' onClick={userToUserFn}>转移</Button>
+          <Button size='small' color='danger'>导出</Button>
+          </>
+        }
+      </aside>
+      <section className='h-20 relative'>
+        <div className='absolute h-32 left-3 right-3 -top-16 z-50 shadow-xl bg-white rounded-md bg-opacity-90 p-2 text-base'>
           <ul className='grid grid-cols-2 gap-x-3.5 gap-y-1.5'>
             <li><span className='font-bold'>客户：</span>{user?.name}</li>
             <li><span className={`text-white px-1 rounded-sm py-0.5 ${userState[user?user.state:0].class}`}>{userState[user?user.state:0].title}</span></li>
@@ -105,21 +123,21 @@ const show = () => {
             <li><span className='font-bold'>行业：</span>{user?.trade?.name}</li>
             <li><span className='font-bold'>意向面积：</span>{user?.area}</li>
             <li><span className='font-bold'>意向时长：</span>{user?.timer}</li>
-            <li className='col-span-2'><span className='font-bold'>意向市场：</span>{user?.market?.name}</li>
-            <li className='col-span-2'><span className='font-bold'>地址：</span>{user?.address}</li>
           </ul>
         </div>
       </section>
-      <p className='px-3 text-base'><span className='font-bold'>客户简介：</span>{user?.desc}</p>
+      <p className='px-3 text-base'><span className='font-bold'>客户地址：</span>{user?.address}</p>
+      <p className='px-3 text-base mt-3'><span className='font-bold'>客户简介：</span>{user?.desc}</p>
+      <p className='px-3 text-base mt-3'><span className='font-bold'>意向市场：</span>{user?.markets?.map(item => item.name).join('-')}</p>
       <p className='text-base mt-3 px-3 flex items-center space-x-2'><ClockCircleOutline /><span>{user?.createdAt}</span></p>
       <p className='text-base mt-3 px-3 flex items-center space-x-2'><UserContactOutline /><span>{user?.adminer?.name}</span></p>
       <h3 className='font-bold text-lg mt-3 px-3 border-t pt-3 flex justify-between items-center'>
         <span>TA的跟踪记录({notes?.count})</span>
-        {user?.adminerId === adminer.id && <Button onClick={() => updateNote(0)} size='mini' color='success'>新增</Button>}
+        {user?.adminerId === me.id && <Button onClick={() => updateNote(0)} size='mini' color='success'>新增</Button>}
       </h3>
       <ul className='text-base mt-1 px-3 space-y-4'>
         { notes?.rows.map(note => <NoteItem key={note.id} note={note}>
-          { user?.adminerId === adminer.id &&
+          { user?.adminerId === me.id &&
             <>
               <Button size='mini' color='primary' onClick={() => updateNote(note.id)}>编辑</Button>
               <Button size='mini' color='danger' onClick={() => delNote(note.id, note.content)}>删除</Button>
@@ -130,6 +148,13 @@ const show = () => {
       <WaterMark content='中储福森客户名单' zIndex={0} />
       <InfiniteScroll loadMore={loadMore} hasMore={hasMore} threshold={20} />
       <Modal />
+
+      <Picker
+        columns={[adminers]}
+        visible={pickVisible}
+        onConfirm={onConfirmPickValue}
+        onClose={() => setPickVisible(false)}
+      />
     </>
   )
 }
