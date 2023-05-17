@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import UserItem from '../../components/item/user'
-import { InfiniteScroll, Button, Form, Input, Toast } from 'antd-mobile'
-import { IUser } from '../../typings'
+import { InfiniteScroll, Button, Form, Input, Toast, Picker, Radio, Space } from 'antd-mobile'
+import { IAdminer, IUser } from '../../typings'
 import http from '../../utils/http'
 import { size } from '../../utils/state'
 import { useSearchParams } from 'react-router-dom'
+import { PickerValue } from 'antd-mobile/es/components/picker-view'
 
 export default () => {
   const [query] = useSearchParams();
@@ -38,8 +39,8 @@ export default () => {
   }
 
   const [form] = Form.useForm();
-  const onFinish = (v: {name?: string; phone?: string}) => {
-    if(!v.name && !v.phone) {
+  const onFinish = (v: {name?: string; phone?: string; state?: string; adminer?: string}) => {
+    if(!v.name && !v.phone && !v.adminer && (v.state === undefined)) {
       return Toast.show({
         content: '搜索内容不能为空'
       })
@@ -47,6 +48,11 @@ export default () => {
     let search = ''
     v.name && (search += `&name=${v.name}`)
     v.phone && (search += `&phone=${v.phone}`)
+    v.state && (search += `&state=${v.state}`)
+    if(v.adminer){
+      const adminerId = v.adminer.split('-')[0];
+      search += `&adminerId=${adminerId}`
+    }
     setPage(1)
     getData(1, search)
   }
@@ -55,6 +61,23 @@ export default () => {
     form.resetFields()
     setPage(1)
     getData(1)
+  }
+
+  // 员工列表
+  const [adminList, setAdminList] = useState<{value: string; label: string}[]>([]);
+  const [visiState, setVisiState] = useState(false);
+  const getAdminList = () => {
+    setVisiState(true)
+    if(adminList.length === 0){
+      http.get<IAdminer[]>('/adminer/all?roleId=3').then(ret => {
+        const alists = ret.map(i => ({label: i.name, value: i.id+""}))
+        setAdminList(alists)
+      })
+    }
+  }
+  const pickerAdmin = (i: PickerValue[]) => {
+    const ad = adminList.find(item => item.value == i[0]);
+    form.setFieldValue('adminer', `${ad?.value}-${ad?.label}`)
   }
   return (
     <>
@@ -70,11 +93,30 @@ export default () => {
         <Form.Item name='phone' label='用户手机'>
           <Input placeholder='请输入用户手机' />
         </Form.Item>
+        <Form.Item name='state' label='用户状态'>
+          <Radio.Group>
+            <Space justify='between'>
+              <Radio value='0'>失效</Radio>
+              <Radio value='1'>跟踪</Radio>
+              <Radio value='2'>签约</Radio>
+            </Space>
+          </Radio.Group>
+        </Form.Item>
+        <Form.Item name='adminer' label='员工' onClick={getAdminList}>
+          <Input placeholder='请选择员工' readOnly />
+        </Form.Item>
       </Form>
       <ul className='mb-3 px-3 text-base'>
         { users.rows.map(user => <UserItem key={user.id} user={user} /> )}
       </ul>
       <InfiniteScroll loadMore={loadMore} hasMore={hasMore} threshold={20} />
+
+      <Picker
+        columns={[adminList]}
+        visible={visiState}
+        onClose={() => setVisiState(false)}
+        onConfirm={pickerAdmin}
+      />
     </>
   )
 }

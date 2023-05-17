@@ -91,7 +91,7 @@ const show = () => {
   const [adminers, setAdminers] = useState<{label: string; value: string}[]>([])
   const [pickVisible, setPickVisible] = useState<boolean>(false)
   const userToUserFn = () => {
-    http.get<IAdminer[]>('/adminer/all')
+    http.get<IAdminer[]>('/adminer/all?roleId=3')
     .then(ret => setAdminers(ret.map(item => ({label: item.name, value: `${item.id}`}))))
     .then(() => setPickVisible(true))
   }
