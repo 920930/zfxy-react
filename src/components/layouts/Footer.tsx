@@ -37,7 +37,7 @@ const Footer: React.FC = () => {
   return (
     <>
       <AntFooter
-        label={ <p className='flex items-center space-x-2'><HandPayCircleOutline /> <span>中福信义公司客服管理系统</span></p> }
+        label={ <p className='flex items-center space-x-2'><HandPayCircleOutline /> <span>忠福信义公司客服管理系统</span></p> }
         content='@ 2023 Zcfsjt.com All rights reserved'
       />
       <TabBar activeKey={locat.pathname} onChange={v => navigate(v)} className='fixed bottom-0 left-0 bg-white w-full border-t h-14'>
