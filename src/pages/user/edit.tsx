@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { Form, Input, Button, Radio, Space, TextArea, Picker, Switch, Popup, CheckList } from 'antd-mobile'
+import { Form, Input, Button, Radio, Space, TextArea, Picker, Switch, Popup, CheckList, Toast } from 'antd-mobile'
 import http from '../../utils/http'
 import { useEffect, useState } from 'react'
 import { IUser, TTrade } from '../../typings'
@@ -47,10 +47,8 @@ const edit = () => {
   const [marketDefault, setMarkeDefault] = useState<string[]>([]);
   // 如果是更新行业或员工id
   const [pickVisible, setPickVisible] = useState<boolean>(false)
-  const [pickValue, setPickValue] = useState<PickerValue[]>([])
   const onConfirmPickValue = (v: PickerValue[]) => {
-    if(!v[0]) return
-    setPickValue(v)
+    if(v[0] === null) return Toast.show('请联系管理员增加');
     const vv = trades.find(item => item.value === v[0])
     form.setFieldValue('tradeId', `${vv?.value}-${vv?.label}`)
   }
@@ -126,8 +124,8 @@ const edit = () => {
       <Picker
         columns={[trades]}
         visible={pickVisible}
-        value={pickValue}
         onConfirm={onConfirmPickValue}
+        onClose={() => setPickVisible(false)}
       />
 
       <Popup

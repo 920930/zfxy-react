@@ -76,6 +76,7 @@ export default () => {
     }
   }
   const pickerAdmin = (i: PickerValue[]) => {
+    if(i[0] === null) return Toast.show('请联系管理员增加');
     const ad = adminList.find(item => item.value == i[0]);
     form.setFieldValue('adminer', `${ad?.value}-${ad?.label}`)
   }
