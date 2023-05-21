@@ -4,6 +4,7 @@ import UserItem from '../components/item/user';
 import NoteItem from '../components/item/note1';
 import http from '../utils/http';
 import { INote, IUser } from '../typings';
+import { NoticeBar } from 'antd-mobile'
 
 type TData = {
   users: {
@@ -20,6 +21,13 @@ type TData = {
   }
 }
 
+interface IMemberNote {
+  id: number;
+  name: string;
+  users: {id: number; createdAt: string}[];
+  notes: {id: number; createdAt: string}[];
+}
+
 const Home = () => {
   const [datas, setDatas] = useState<TData>({
     users: {today: [], old: [], todayCount: 0, oldCount: 0},
@@ -28,8 +36,21 @@ const Home = () => {
   useEffect(() => {
     http.get<TData>('/index').then(ret => setDatas(ret))
   }, [])
+
+  const [members, setMember] = useState<IMemberNote[]>([])
+  const [notes, setNote] = useState<IMemberNote[]>([])
+  useEffect(() => {
+    http.get<{memberUsers: IMemberNote[], memberNotes: IMemberNote[]}>('/msg')
+      .then(ret => {
+        setMember(ret.memberUsers)
+        setNote(ret.memberNotes)
+        console.log(ret)
+      })
+  }, [])
   return (
     <>
+      <ul className='px-3 text-base py-2'>
+      </ul>
       <ul className='px-3 text-base py-2'>
         <h3 className='font-bold text-xl border-b mb-2 pb-0.5'>今日新增客户({datas.users.todayCount})</h3>
         {

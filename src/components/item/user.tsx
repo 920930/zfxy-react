@@ -27,7 +27,7 @@ const kehu = (props: Props) => {
           </section>
           <section className='flex justify-between items-center mt-1'>
             <aside className='text-gray-500 flex items-center'><PhoneFill /><span>{user.phone}</span></aside>
-            <span className='text-gray-500'>{user.createdAt}</span>
+            {/* <span className='text-gray-500'>{user.createdAt}</span> */}
           </section>
           <p className='text-gray-500 pt-1 border-t mt-1 text2'>{user.desc}</p>
           {props.children && <aside className='flex justify-end space-x-3'>{props.children}</aside>}
