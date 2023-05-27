@@ -4,4 +4,13 @@ export const userState = [
   { title: '已签约', class: 'bg-green-500' },
 ]
 
-export const size = 10
+export const size = 10;
+
+// 防抖
+export const debounce = (fn: (val: any) => void, detail: number = 800) => {
+  let timer: number | null = null;
+  return (v: any) => {
+    if (timer) clearTimeout(timer)
+    timer = setTimeout(() => fn(v), detail)
+  }
+}

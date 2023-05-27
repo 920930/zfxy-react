@@ -4,7 +4,6 @@ import UserItem from '../components/item/user';
 import NoteItem from '../components/item/note1';
 import http from '../utils/http';
 import { INote, IUser } from '../typings';
-import { NoticeBar } from 'antd-mobile'
 
 type TData = {
   users: {
@@ -37,20 +36,25 @@ const Home = () => {
     http.get<TData>('/index').then(ret => setDatas(ret))
   }, [])
 
-  const [members, setMember] = useState<IMemberNote[]>([])
+  const [menbers, setMember] = useState<IMemberNote[]>([])
   const [notes, setNote] = useState<IMemberNote[]>([])
   useEffect(() => {
-    http.get<{memberUsers: IMemberNote[], memberNotes: IMemberNote[]}>('/msg')
+    http.get<{menberUsers: IMemberNote[], menberNotes: IMemberNote[]}>('/msg')
       .then(ret => {
-        setMember(ret.memberUsers)
-        setNote(ret.memberNotes)
-        console.log(ret)
+        setMember(ret.menberUsers)
+        setNote(ret.menberNotes)
       })
   }, [])
   return (
     <>
-      <ul className='px-3 text-base py-2'>
-      </ul>
+      <section className='px-3 text-base py-2 bg-red-400 bg-opacity-20'>
+        <h3 className='font-bold border-b mb-2 pb-0.5 border-red-200 text-red-800'>7天未新增客户</h3>
+        {menbers.map(menber => <Link to={`/adminer/${menber.id}`} key={menber.id} className='text-red-600 mr-3'>{menber.name}</Link>)}
+      </section>
+      <section className='px-3 text-base py-2 bg-yellow-400 bg-opacity-20'>
+        <h3 className='font-bold border-b mb-2 pb-0.5 border-yellow-300 text-yellow-800'>3天未跟踪客户</h3>
+        {notes.map(note => <Link to={`/adminer/${note.id}`} key={note.id} className='text-yellow-600 mr-3'>{note.name}</Link>)}
+      </section>
       <ul className='px-3 text-base py-2'>
         <h3 className='font-bold text-xl border-b mb-2 pb-0.5'>今日新增客户({datas.users.todayCount})</h3>
         {

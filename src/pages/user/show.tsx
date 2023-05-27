@@ -100,6 +100,11 @@ const show = () => {
     http.put(`/user/${param.id}/move`, { aid: v[0] }).then(() => getUser())
     // setPickValue(v)
   }
+
+  const outExcel = () => {
+    http.get(`/user/${param.id}/excel`)
+      .then(ret => console.log(ret))
+  }
   return (
     <>
       <Image src={imgUrl} height={160} fit='cover' />
@@ -109,7 +114,7 @@ const show = () => {
           me.roleId <= 2 &&
           <>
           <Button size='small' color='primary' onClick={userToUserFn}>转移</Button>
-          <Button size='small' color='danger'>导出</Button>
+          <Button size='small' color='danger' onClick={outExcel}>导出</Button>
           </>
         }
       </aside>

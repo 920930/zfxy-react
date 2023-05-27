@@ -181,7 +181,7 @@ export const routes: RouteObject[] = [
   {
     path: '/login',
     name: 'login',
-    element: React.createElement(lazy(() => import('../pages/auth/Login'))),
+    element: React.createElement(lazy(() => import('../pages/auth/login'))),
     loader() {
       // 如果已经登录，还要进入login页面，将被跳转到首页
       return store.getState().userReducer.token ? redirect('/index') : null

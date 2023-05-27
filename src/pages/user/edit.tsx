@@ -6,6 +6,7 @@ import { IUser, TTrade } from '../../typings'
 import { PickerValue } from 'antd-mobile/es/components/picker-view'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/typings'
+import { debounce } from '../../utils/state';
 
 const edit = () => {
   const [form] = Form.useForm()
@@ -56,16 +57,17 @@ const edit = () => {
   // 提交表单
   const onFinish = (v: any) => {
     if(param.id) {
-      param.id === '0' ? storeFn(v) : editFn(param.id, v)
+      param.id === '0' ? storeFn(v) : editFn(v)
     }
   }
   const navigate = useNavigate()
-  const storeFn = (v: any) => {
+  // 防抖
+  const storeFn = debounce((v: any) => {
     http.post<{id: number}>('/user/store', v).then(ret => navigate(`/user/${ret.id}`))
-  }
-  const editFn = (uid: string, v: any) => {
-    http.put(`/user/${uid}`, v).then(() => navigate(`/user/${uid}`))
-  }
+  })
+  const editFn = debounce((v: any) => {
+    http.put(`/user/${param.id}`, v).then(() => navigate(`/user/${param.id}`))
+  })
 
   const marketToForm = (val: string[]) => {
     const ret = markets.filter(item => val.includes(item.value)).map(item => `${item.value}-${item.label}`)
