@@ -188,6 +188,11 @@ export const routes: RouteObject[] = [
     },
   },
   {
+    path: '/excel/:code',
+    name: 'excel',
+    element: React.createElement(lazy(() => import('../pages/excel')))
+  },
+  {
     path: '*',
     element: <Navigate to='/index' />
   }

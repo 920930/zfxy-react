@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from 'axios'
-import store, {updateToken} from "../store";
+import store, { updateToken } from "../store";
 import { Toast } from 'antd-mobile';
 
 const instance = axios.create({
@@ -18,16 +18,23 @@ instance.interceptors.request.use(config => {
 
 
 instance.interceptors.response.use(response => {
-  if(response.headers['authorization']){
+  if (response.headers['authorization']) {
     store.dispatch(updateToken(response.headers['authorization']))
   }
   return response.data
 }, (err) => {
-  Toast.show({
-    content: err.response.status === 401 ? '登录超时 跳转登录页面...' : err.response.data.message,
-    position: 'top',
-  })
-  if(err.response.status === 401){
+  if (err.response.data instanceof Blob) {
+    Toast.show({
+      content: '文件已过期，请重新导出',
+      position: 'top',
+    })
+  } else {
+    Toast.show({
+      content: err.response.status === 401 ? '登录超时 跳转登录页面...' : err.response.data.message,
+      position: 'top',
+    })
+  }
+  if (err.response.status === 401) {
     localStorage.clear()
     setTimeout(() => {
       globalThis.location.href = import.meta.env.VITE_CLIENT_HOST + '/login'
@@ -38,12 +45,13 @@ instance.interceptors.response.use(response => {
 
 type TMethod = 'get' | 'post' | 'put' | 'delete';
 
-const http = <T>(method: TMethod, {url, body, config}: {url: string, body?: any, config?: AxiosRequestConfig}) => {
+const http = <T>(method: TMethod, { url, body, config }: { url: string, body?: any, config?: AxiosRequestConfig }) => {
   return new Promise<T>(async (resolve, reject) => {
     try {
-      if(method === 'get'){
-        const { data } = await instance[method]<T>(url, {params: body, ...config});
-        resolve(data)
+      if (method === 'get') {
+        const data = await instance[method]<T>(url, { params: body, ...config });
+        if (config?.responseType === 'blob') resolve(data as T)
+        resolve(data.data)
       } else if (method === 'delete') {
         const { data } = await instance[method]<T>(url, config);
         resolve(data)
@@ -58,19 +66,19 @@ const http = <T>(method: TMethod, {url, body, config}: {url: string, body?: any,
 }
 
 http.get = <T>(url: string, params?: any, config?: AxiosRequestConfig) => {
-  return http<T>('get', {url, body: params, config});
+  return http<T>('get', { url, body: params, config });
 }
 
 http.post = <T>(url: string, body?: any, config?: AxiosRequestConfig) => {
-  return http<T>('post', {url, body, config});
+  return http<T>('post', { url, body, config });
 }
 
 http.put = <T>(url: string, body?: any, config?: AxiosRequestConfig) => {
-  return http<T>('put', {url, body, config});
+  return http<T>('put', { url, body, config });
 }
 
 http.del = <T>(url: string, config?: AxiosRequestConfig) => {
-  return http<T>('delete', {url, config});
+  return http<T>('delete', { url, config });
 }
 
 export default http;
