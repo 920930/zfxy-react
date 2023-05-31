@@ -5,9 +5,9 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 
 const Index = () => {
   const { code } = useParams<{code: string}>();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const count = searchParams.get('count');
-  const pageCount = Math.ceil(Number.parseInt(count || '0') / 1000);
+  const [searchParams] = useSearchParams();
+  const count = searchParams.get('count') || '0';
+  const pageCount = Math.ceil(Number.parseInt(count) / 1000);
 
   const [wechat, setWechat] = useState(false);
   const [blob, setBlob] = useState('');
@@ -62,7 +62,7 @@ const Index = () => {
           <Input type="number" max={pageCount} value={page} onChange={i => setPage(i)} className="border" />
         </div>
         <Button onClick={downExcelFn}>下载</Button>
-        <a href={blob} download='中储福森.xlsx' ref={(e) => aNode.current = e}></a>
+        <a href={blob} download={`中储福森${code}.xlsx`} ref={(e) => aNode.current = e}></a>
       </div>
     }
     </>
