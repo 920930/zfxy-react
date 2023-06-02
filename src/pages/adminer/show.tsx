@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { Avatar, Image } from 'antd-mobile'
+import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Avatar, Image, Button, Toast } from 'antd-mobile'
 import UserItem from '../../components/item/user';
 import Note2 from '../../components/item/note2';
 import http from '../../utils/http'
 import { IAdminer } from '../../typings';
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store/typings'
 
-type Props = {}
-
-const show = (props: Props) => {
+const show = () => {
+  const me = useSelector((state: RootState) => state.userReducer.user);
+  const navi = useNavigate();
   // 员工id
   const param = useParams();
   // 员工信息含客户，跟单记录
@@ -18,6 +20,10 @@ const show = (props: Props) => {
     .then(ret => setAdminer(ret))
   }, [param.id])
 
+  const outExcel = () => {
+    if(me.roleId == 3) return Toast.show('您无权限')
+    http.get<{code: string}>('/user/0/excel?type='+param.id).then(ret => navi(`/excel/${ret.code}`))
+  }
   return (
     <>
       <section className='relative'>
@@ -29,6 +35,11 @@ const show = (props: Props) => {
             <li className='col-span-2'><span className='font-bold'>电话：</span>{adminer?.phone}</li>
           </ul>
         </div>
+        {
+          me.roleId != 3 && <aside className="fixed right-5 bottom-20">
+            <Button color="success" onClick={outExcel}>导出</Button>
+          </aside>
+        }
       </section>
       <div className='mt-3 mb-2 flex justify-between px-3'>
         <h3 className='font-bold text-lg'>客户列表({adminer?.userCount})</h3>

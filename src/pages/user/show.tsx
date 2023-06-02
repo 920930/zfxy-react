@@ -100,12 +100,10 @@ const show = () => {
     http.put(`/user/${param.id}/move`, { aid: v[0] }).then(() => getUser())
     // setPickValue(v)
   }
-  console.log(location.origin)
+
   const outExcel = () => {
-    http.get<{code: string; count: number}>(`/user/${param.id}/excel`)
-      .then(ret => {
-        navigate('/excel/'+ret.code+'?count='+ret.count)
-      })
+    http.get<{code: string}>(`/user/${param.id}/excel?type=note`)
+      .then(ret => navigate('/excel/'+ret.code))
   }
   return (
     <>

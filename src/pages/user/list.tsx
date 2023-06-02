@@ -4,10 +4,15 @@ import { InfiniteScroll, Button, Form, Input, Toast, Picker, Radio, Space } from
 import { IAdminer, IUser } from '../../typings'
 import http from '../../utils/http'
 import { size } from '../../utils/state'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { PickerValue } from 'antd-mobile/es/components/picker-view'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store/typings'
 
 export default () => {
+  const navi = useNavigate()
+  const me = useSelector((state: RootState) => state.userReducer.user)
+
   const [query] = useSearchParams();
   const adminerId = query.get('adminerId')
   
@@ -80,6 +85,11 @@ export default () => {
     const ad = adminList.find(item => item.value == i[0]);
     form.setFieldValue('adminer', `${ad?.value}-${ad?.label}`)
   }
+
+  const outExcel = () => {
+    if(me.roleId == 3) return Toast.show('您无权限')
+    http.get<{code: string}>('/user/0/excel?type=all').then(ret => navi(`/excel/${ret.code}`))
+  }
   return (
     <>
       <Form form={form} layout='horizontal' onFinish={onFinish} footer={
@@ -111,6 +121,12 @@ export default () => {
         { users.rows.map(user => <UserItem key={user.id} user={user} /> )}
       </ul>
       <InfiniteScroll loadMore={loadMore} hasMore={hasMore} threshold={20} />
+
+      {
+        me.roleId != 3 && <aside className="fixed right-5 bottom-20">
+          <Button color="success" onClick={outExcel}>导出</Button>
+        </aside>
+      }
 
       <Picker
         columns={[adminList]}

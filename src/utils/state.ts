@@ -9,10 +9,10 @@ export const userState = [
 export const size = 10;
 
 // 防抖
-export const debounce = (fn: (val: any) => void, detail: number = 800) => {
+export const debounce = (fn: (val?: any) => void, detail: number = 1000) => {
   let timer: number | null = null;
-  Toast.show('请等待')
-  return (v: any) => {
+  return (v?: any) => {
+    Toast.show('请等待')
     if (timer) clearTimeout(timer)
     timer = setTimeout(() => fn(v), detail)
   }

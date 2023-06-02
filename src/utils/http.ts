@@ -21,7 +21,10 @@ instance.interceptors.response.use(response => {
   if (response.headers['authorization']) {
     store.dispatch(updateToken(response.headers['authorization']))
   }
-  return response.data
+  if (response.data instanceof Blob) {
+    return response;
+  }
+  return response.data;
 }, (err) => {
   if (err.response.data instanceof Blob) {
     Toast.show({
@@ -45,12 +48,15 @@ instance.interceptors.response.use(response => {
 
 type TMethod = 'get' | 'post' | 'put' | 'delete';
 
-const http = <T>(method: TMethod, { url, body, config }: { url: string, body?: any, config?: AxiosRequestConfig }) => {
+const http = <T>(method: TMethod, { url, body, config }: { url: string, body?: any, config?: AxiosRequestConfig }, fn?: (count: any) => void) => {
   return new Promise<T>(async (resolve, reject) => {
     try {
       if (method === 'get') {
         const data = await instance[method]<T>(url, { params: body, ...config });
-        if (config?.responseType === 'blob') resolve(data as T)
+        if (config?.responseType === 'blob') {
+          fn?.(data.headers['count']);
+          resolve(data.data as T)
+        }
         resolve(data.data)
       } else if (method === 'delete') {
         const { data } = await instance[method]<T>(url, config);
@@ -65,8 +71,8 @@ const http = <T>(method: TMethod, { url, body, config }: { url: string, body?: a
   })
 }
 
-http.get = <T>(url: string, params?: any, config?: AxiosRequestConfig) => {
-  return http<T>('get', { url, body: params, config });
+http.get = <T>(url: string, params?: any, config?: AxiosRequestConfig, fn?: (count: any) => void) => {
+  return http<T>('get', { url, body: params, config }, fn);
 }
 
 http.post = <T>(url: string, body?: any, config?: AxiosRequestConfig) => {
