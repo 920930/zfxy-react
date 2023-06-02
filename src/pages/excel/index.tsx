@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"
-import { Toast, Input, Button } from "antd-mobile";
+import { useParams } from "react-router-dom"
+import { Toast, Button } from "antd-mobile";
 import http from "../../utils/http";
-import { debounce } from "@/utils/state";
+import { debounce } from "../../utils/state";
 
 const Index = () => {
-  const navi = useNavigate();
   const { code } = useParams<{code: string}>();
 
   const [pageCount, setPageCount] = useState(1)
@@ -17,14 +16,6 @@ const Index = () => {
       setWechat(true)
     }else{
       setWechat(false)
-      // http.get<Blob>('/excel/' + code + `?page=${page}`, null, {responseType: 'blob'}, (num: any) => {
-      //   setCount(num);
-      //   // setPageCount(Math.ceil(num / 1000))
-      // }).then(ret => {
-      //   const url = URL.createObjectURL(ret)
-      //   setBlob(url)
-      //   Toast.show('正在下载')
-      // }).then(() => setTimeout(() => aNode.current?.click(), 900))
     }
     return () => removeUrl()
   }, []);
