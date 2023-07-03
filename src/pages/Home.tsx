@@ -45,8 +45,18 @@ const Home = () => {
         setNote(ret.menberNotes)
       })
   }, [])
+  const now = new Date();
+  const fullYear = now.getFullYear();
+  const month = now.getMonth() + 1;
+  const date = now.getDate();
+  const hour = now.getHours();
+  const minute = now.getMinutes();
   return (
     <>
+      <section className='font-bold text-base border-b mb-2 pb-0.5'>
+        <span>当前日期：</span>
+        <span className=''>{fullYear}年{month}月{date}日 {hour}:{minute < 10 ? `0${minute}` : minute}</span>
+      </section>
       <section className='px-3 text-base py-2 bg-red-400 bg-opacity-20'>
         <h3 className='font-bold border-b mb-2 pb-0.5 border-red-200 text-red-800'>7天未新增客户</h3>
         {menbers.map(menber => <Link to={`/adminer/${menber.id}`} key={menber.id} className='text-red-600 mr-3'>{menber.name}</Link>)}
