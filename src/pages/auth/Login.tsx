@@ -32,7 +32,7 @@ const Login = (props: Props) => {
       <div className="flex justify-center mt-16">
         <img src={logo} alt="logo" className="w-2/3" />
       </div>
-      <p className="text-center mb-5 mt-3 text-sm">中福信义公司客户管理系统</p>
+      <p className="text-center mb-5 mt-3 text-sm">忠富信义公司客户管理系统</p>
       <Form
         name="form"
         onFinish={onFinish}
